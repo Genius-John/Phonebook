@@ -3,20 +3,25 @@ package ru.geniusjohn.phonebook.domain;
 import javax.persistence.*;
 
 @Entity
-public class Records {
+public class Record {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String fullName;
+
+    public Record(String fullName, String exNumber, String mobileNumber) {
+        this.fullName = fullName;
+        this.exNumber = exNumber;
+        this.mobileNumber = mobileNumber;
+    }
+
     private String exNumber;
     private String mobileNumber;
 
-    public Records(){
-
+    public Record(){
     }
-
 
     public Long getId() {
         return id;
