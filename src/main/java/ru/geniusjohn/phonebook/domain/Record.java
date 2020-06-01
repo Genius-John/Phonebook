@@ -4,23 +4,37 @@ import javax.persistence.*;
 
 @Entity
 public class Record {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String fullName;
-
-    public Record(String fullName, String exNumber, String mobileNumber) {
-        this.fullName = fullName;
-        this.exNumber = exNumber;
-        this.mobileNumber = mobileNumber;
-    }
-
     private String exNumber;
     private String mobileNumber;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "group_id")
+    private Group isGroup;
+
     public Record(){
+    }
+
+    public Record(String fullName, String exNumber, String mobileNumber, Group group) {
+        this.fullName = fullName;
+        this.exNumber = exNumber;
+        this.mobileNumber = mobileNumber;
+        this.isGroup = group;
+    }
+
+    public String getIsGroupName() {
+        return (isGroup != null) ? isGroup.getGroupName() : "<none>";
+    }
+
+    public Group getIsGroup() {
+        return isGroup;
+    }
+
+    public void setIsGroup(Group isGroup) {
+        this.isGroup = isGroup;
     }
 
     public Long getId() {

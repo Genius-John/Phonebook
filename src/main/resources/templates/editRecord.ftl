@@ -38,12 +38,10 @@
                     <td><input type="text" class="form-control mr-2" name="mobileNumber" value="${record.mobileNumber}"></td>
                     <td>
                         <div class="col-auto">
-                            <select class="custom-select mr-sm-2" id="inlineFormGroupSelect">
-                                <option disabled selected>Group</option>
-                                <option value="1">Office</option>
-                                <option value="2">MSK</option>
-                                <option value="3">Omsk</option>
-                                <option value="4">Mngr</option>
+                            <select class="custom-select mr-sm-2" name="groupName">
+                                <#list groups as group>
+                                    <option value="${group.groupName}">${group.groupName}</option>
+                                </#list>
                             </select>
                         </div>
                     </td>

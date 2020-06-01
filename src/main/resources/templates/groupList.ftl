@@ -6,7 +6,7 @@
     <div>
 
         <form method="post" class="form-inline mt-4">
-            <input type="text" class="form-control mr-2" name="mobileNumber" placeholder="group name">
+            <input type="text" class="form-control mr-2" name="groupName" placeholder="group name">
             <button class="btn btn-primary my-3" type="submit">Add</button>
         </form>
     </div>
@@ -22,15 +22,18 @@
     </tr>
     </thead>
     <tbody>
-<tr>
-    <div>
-        <form action="/phonebook/update/" method="post">
-            <td><input type="text" class="form-control mr-2 col-sm-4" name="groupName" value=""></td>
-            <td>
-                <a class="btn btn-danger text-center" href="/phonebook/">delete</a>
-            </td>
-        </form>
-    </div>
+    <#list groups as group>
+        <tr>
+            <div>
+                <form action="/groupList/${group.id}" method="post">
+                    <td><input type="text" class="form-control mr-2 col-sm-4" name="groupName" value="${group.groupName}"></td>
+                    <td>
+                        <a class="btn btn-danger text-center" href="/groupList/del/${group.id}">delete</a>
+                        <button type="submit" class="btn btn-success">save</button>
+                    </td>
+                </form>
+            </div>
 
-</tr>
+        </tr>
+    </#list>
 </@c.page>
