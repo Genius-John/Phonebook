@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
+import ru.geniusjohn.phonebook.repositories.RecordRepositories;
 
 import java.util.Map;
 
@@ -16,10 +17,16 @@ import java.util.Map;
 public class GroupController {
 
     private GroupRepository groupRepository;
+    private RecordRepositories recordRepositories;
 
     @Autowired
     public void setGroupRepository(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
+    }
+
+    @Autowired
+    public void setRecordRepositories(RecordRepositories recordRepositories) {
+        this.recordRepositories = recordRepositories;
     }
 
     @GetMapping("/groupList") // List of groups
@@ -31,7 +38,7 @@ public class GroupController {
 
     @PostMapping("/groupList")  //Add group
     public String create (@RequestParam String groupName,
-                                Map<String, Object> model) {
+                          Map<String, Object> model) {
         Group group = new Group(groupName);
         groupRepository.save(group);
         Iterable<Group> groups = groupRepository.findAll();

@@ -11,11 +11,7 @@ import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.Record;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepositories;
-
-import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 @Controller
 public class RecordController {
@@ -60,7 +56,7 @@ public class RecordController {
         recordRepositories.delete(record);
         return "redirect:/phonebook";
     }
-    @GetMapping("/phonebook/{record}") // Редактирование записи
+    @GetMapping("/phonebook/{record}") // Страница редактирования записи
     public String update(@PathVariable("record") Record record, Model model) {
         Iterable<Group> groups = groupRepository.findAll();
         model.addAttribute("groups", groups);
@@ -69,14 +65,12 @@ public class RecordController {
 
     @PostMapping() //Создание записи
     public String create(
-            @RequestParam String fullName,
-            @RequestParam String exNumber,
-            @RequestParam String mobileNumber,
-            @RequestParam String groupName,
-            Map<String, Object> model) {
-
+                        @RequestParam String fullName,
+                        @RequestParam String exNumber,
+                        @RequestParam String mobileNumber,
+                        @RequestParam String groupName,
+                        Map<String, Object> model) {
         Group group = groupRepository.findByGroupName(groupName);   // есть сомнения...
-
         Record record = new Record(fullName, exNumber, mobileNumber, group);
         recordRepositories.save(record);
         Iterable<Record> records = recordRepositories.findAll();

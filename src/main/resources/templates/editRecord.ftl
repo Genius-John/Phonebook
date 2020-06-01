@@ -3,7 +3,6 @@
 <@c.page>
 
     <div>
-
         <form method="post" class="form-inline mt-4">
             <input type="text" disabled class="form-control mr-2" name="fullName" placeholder="Full name" />
             <input type="text" disabled class="form-control mr-2" name="exNumber" placeholder="Extension">
@@ -30,27 +29,27 @@
     </tr>
     </thead>
     <tbody>
-        <tr>
-            <div>
-                <form action="/phonebook/update/${record.id}" method="post">
-                    <td><input type="text" class="form-control mr-2" name="fullName" value="${record.fullName}"></td>
-                    <td><input type="text" class="form-control mr-2" name="exNumber" value="${record.exNumber}"></td>
-                    <td><input type="text" class="form-control mr-2" name="mobileNumber" value="${record.mobileNumber}"></td>
-                    <td>
-                        <div class="col-auto">
-                            <select class="custom-select mr-sm-2" name="groupName">
-                                <#list groups as group>
-                                    <option value="${group.groupName}">${group.groupName}</option>
-                                </#list>
-                            </select>
-                        </div>
-                    </td>
-                    <td>
-                        <a class="btn btn-danger" href="/phonebook/del/${record.id}">delete</a>
-                        <button type="submit" class="btn btn-success">save</button>
-                    </td>
-                </form>
-            </div>
+<tr>
+    <div>
+        <form action="/phonebook/update/${record.id}" method="post">
+            <td><input type="text" class="form-control mr-2" name="fullName" value="${record.fullName}"></td>
+            <td><input type="text" class="form-control mr-2" name="exNumber" value="${record.exNumber}"></td>
+            <td><input type="text" class="form-control mr-2" name="mobileNumber" value="${record.mobileNumber}"></td>
+            <td>
+                <div class="col-auto">
+                    <select class="custom-select mr-sm-2" name="groupName">
+                        <#list groups as group>
+                            <option value="${group.groupName}">${group.groupName}</option>
+                        </#list>
+                    </select>
+                </div>
+            </td>
+            <td>
+                <a class="btn btn-danger" href="/phonebook/del/${record.id}">delete</a>
+                <button type="submit" class="btn btn-success">save</button>
+            </td>
+        </form>
+    </div>
 
-        </tr>
+</tr>
 </@c.page>

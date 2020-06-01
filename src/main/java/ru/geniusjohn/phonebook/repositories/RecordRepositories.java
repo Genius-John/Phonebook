@@ -13,4 +13,5 @@ public interface RecordRepositories extends CrudRepository<Record, Long> {
 
     List<Record> findByMobileNumber (String mobileNumber);
 
+    Record findByIsGroup (Long id);
 }
