@@ -24,7 +24,7 @@
         <th>Full name</th>
         <th>Extension</th>
         <th>Mobile</th>
-        <th>drop</th>
+        <th>Group</th>
         <th class="text-center">Action</th>
     </tr>
     </thead>

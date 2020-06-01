@@ -51,6 +51,11 @@ public class RecordController {
         return "editRecord";
     }
 
+    @GetMapping ("/groupList")
+    public String groupList() {
+        return "groupList";
+    }
+
     @PostMapping() //Создание записи
     public String create(
             @RequestParam String fullName,

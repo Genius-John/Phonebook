@@ -16,15 +16,16 @@
         <button disabled class="btn btn-primary ml-3" type="submit">Search</button>
     </form>
     <div class="my-3">
-        <a href="/phonebook"><b>List of records</b></a>
+        <a href="/phonebook" class="mr-3"><b>List of records</b></a>
+        <a href="/groupList"><b>Add group</b></a>
     </div>
     <table class="table table-hover mt-3">
     <thead>
     <tr>
-        <th>Full name</th>
-        <th>Extension</th>
-        <th>Mobile</th>
-        <th>Group</th>
+        <th class="text-center">Full name</th>
+        <th class="text-center">Extension</th>
+        <th class="text-center">Mobile</th>
+        <th class="text-center">Group</th>
         <th class="text-center">Action</th>
     </tr>
     </thead>
@@ -36,15 +37,14 @@
                     <td><input type="text" class="form-control mr-2" name="exNumber" value="${record.exNumber}"></td>
                     <td><input type="text" class="form-control mr-2" name="mobileNumber" value="${record.mobileNumber}"></td>
                     <td>
-                        <div class="dropdown">
-                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Group
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Office</a>
-                                <a class="dropdown-item" href="#">MSK</a>
-                                <a class="dropdown-item" href="#">Omsk</a>
-                            </div>
+                        <div class="col-auto">
+                            <select class="custom-select mr-sm-2" id="inlineFormGroupSelect">
+                                <option disabled selected>Group</option>
+                                <option value="1">Office</option>
+                                <option value="2">MSK</option>
+                                <option value="3">Omsk</option>
+                                <option value="4">Mngr</option>
+                            </select>
                         </div>
                     </td>
                     <td>
