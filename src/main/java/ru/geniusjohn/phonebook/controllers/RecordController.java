@@ -41,7 +41,7 @@ public class RecordController {
         Iterable<Record> records;
         Iterable<Group> groups = groupRepository.findAll();
         if (filter != null && !filter.isEmpty()) {
-            records = recordRepositories.findByFullName(filter);
+            records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContains(filter, filter, filter);
         }else {
             records = recordRepositories.findAll();
         }
