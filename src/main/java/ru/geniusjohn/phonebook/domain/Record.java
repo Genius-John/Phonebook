@@ -1,19 +1,28 @@
 package ru.geniusjohn.phonebook.domain;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
 
 @Entity
+@XmlRootElement(name="DirectoryEntry")
+@XmlType(propOrder = {"fullName", "exNumber", "mobileNumber"})
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlTransient
     private Long id;
+    @XmlElement(name="Name")
     private String fullName;
+    @XmlElement(name="Telephone")
     private String exNumber;
+    @XmlElement(name="Telephone")
     private String mobileNumber;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id")
-    private Group isGroup;
+    @XmlTransient
+    private Group group;
 
     public Record(){
     }
@@ -22,19 +31,20 @@ public class Record {
         this.fullName = fullName;
         this.exNumber = exNumber;
         this.mobileNumber = mobileNumber;
-        this.isGroup = group;
+        this.group = group;
     }
 
-    public String getIsGroupName() {
-        return (isGroup != null) ? isGroup.getGroupName() : "<none>";
+    public String getGroupName() {
+        return group != null ? group.getGroupName() : "<none>";
     }
 
-    public Group getIsGroup() {
-        return isGroup;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setIsGroup(Group isGroup) {
-        this.isGroup = isGroup;
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public Long getId() {

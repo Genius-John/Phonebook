@@ -31,15 +31,17 @@ public class GroupController {
 
     @GetMapping("/groupList") // List of groups
     public String mainPage(Model model) {
-        Iterable<Group> groups = groupRepository.findAll();
+//        Iterable<Group> groups = groupRepository.findAll();
+        Iterable<Group> groups = groupRepository.findAllByOrderByOrderGroup();
         model.addAttribute("groups", groups);
         return "groupList";
     }
 
     @PostMapping("/groupList")  //Add group
-    public String create (@RequestParam String groupName,
+    public String create (@RequestParam Long orderGroup,
+                          @RequestParam String groupName,
                           Map<String, Object> model) {
-        Group group = new Group(groupName);
+        Group group = new Group(orderGroup, groupName);
         groupRepository.save(group);
         Iterable<Group> groups = groupRepository.findAll();
         model.put("groups", groups);
@@ -47,7 +49,8 @@ public class GroupController {
     }
 
     @PostMapping("/groupList/{group}")  //Update group
-    public String update (@PathVariable("group") Group group, String groupName) {
+    public String update (@PathVariable("group") Group group, Long orderGroup, String groupName) {
+        group.setOrderGroup(orderGroup);
         group.setGroupName(groupName);
         groupRepository.save(group);
         return "redirect:/groupList";

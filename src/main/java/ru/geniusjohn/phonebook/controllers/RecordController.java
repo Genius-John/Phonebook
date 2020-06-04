@@ -88,7 +88,7 @@ public class RecordController {
         record.setFullName(fullName);
         record.setExNumber(exNumber);
         record.setMobileNumber(mobileNumber);
-        record.setIsGroup(group);
+        record.setGroup(group);
         recordRepositories.save(record);
         return "redirect:/phonebook";
     }

@@ -24,7 +24,7 @@
     <form method="get" action="/phonebook" class="form-inline mt-4">
         <input type="text" class="form-control col-sm-3" name="filter" value="${filter?ifExists}">
         <button class="btn btn-primary ml-3" type="submit">Search</button>
-        <button disabled class="btn btn-primary ml-5" type="submit">Update catalog</button>
+        <a class="btn btn-primary ml-5" href="/saveXml" >Update catalog</a>
     </form>
 
     <div class="my-3">
@@ -49,7 +49,7 @@
                 <td>${record.fullName}</td>
                 <td>${record.exNumber}</td>
                 <td>${record.mobileNumber}</td>
-                <td>${record.isGroupName}</td>
+                <td>${record.groupName}</td>
                 <td class="text-center">
                     <a class="btn btn-danger" href="/phonebook/del/${record.id}">delete</a>
                     <a class="btn btn-success" href="/phonebook/${record.id}">edit</a>

@@ -8,13 +8,23 @@ public class Group {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long orderGroup;
     private String groupName;
+
+    public Group(Long orderGroup, String groupName) {
+        this.groupName = groupName;
+        this.orderGroup = orderGroup;
+    }
 
     public Group() {
     }
 
-    public Group(String groupName) {
-        this.groupName = groupName;
+    public Long getOrderGroup() {
+        return orderGroup;
+    }
+
+    public void setOrderGroup(Long orderGroup) {
+        this.orderGroup = orderGroup;
     }
 
     public Long getId() {
@@ -32,4 +42,9 @@ public class Group {
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
+
+//    public ItemMenu mapToItemMenu() {
+//        // Url - захардкодить
+//        return new ItemMenu(order + ". " + groupName, "http://127.0.0.1/getGroupXml/" + id);
+//    }
 }
