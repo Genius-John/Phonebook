@@ -3,11 +3,13 @@ package ru.geniusjohn.phonebook.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.Groups;
+import ru.geniusjohn.phonebook.domain.Menu;
 import ru.geniusjohn.phonebook.domain.Records;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepositories;
@@ -29,6 +31,8 @@ public class XmlController {
 
     private GroupRepository groupRepository;
 
+    private String baseUrl;
+
     @Autowired
     public void setRecordRepositories(RecordRepositories recordRepositories) {
         this.recordRepositories = recordRepositories;
@@ -39,15 +43,29 @@ public class XmlController {
         this.groupRepository = groupRepository;
     }
 
+    @Value("${ru.omc.webphonebook.base-url}")
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
     @GetMapping("/getMenuXml")
     public void getMenu(HttpServletResponse response) throws JAXBException, IOException {
 
-        Groups groups = new Groups();
-        groups.setGroups(new ArrayList<>());
-        groups.setGroups(groupRepository.findAll());
-//        for (Group group: groupRepository.findAllOrderByOrder()) {
-//
-//        }
+        Menu menu = new Menu();
+        menu.setMenuItems(new ArrayList<>());
+        menu.setSoftKeyItems(new ArrayList<>());
+
+        for (Group group: groupRepository.findAllByOrderByOrderGroup()) {
+            menu.getMenuItems().add(group.mapToItemMenu(baseUrl + "/getGroupXml/"));
+            menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(baseUrl + "/getGroupXml/"));
+        }
+        OutputStream responseOutputStream = response.getOutputStream();
+
+        JAXBContext context = JAXBContext.newInstance(Menu.class);
+        Marshaller mar = context.createMarshaller();
+        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+        mar.marshal(menu, responseOutputStream);
 
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", "attachment; filename=menu.xml");
@@ -70,7 +88,7 @@ public class XmlController {
         mar.marshal(records, responseOutputStream);
 
         response.setContentType("application/xml");
-        response.addHeader("Content-Disposition", String.format("attachment; filename=%s.xml", group.getGroupName()));
+        response.addHeader("Content-Disposition", String.format("attachment; filename=%s.xml", "group_" + group.getId().toString()));
         response.getOutputStream().flush();
     }
 

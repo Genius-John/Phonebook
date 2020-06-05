@@ -2,11 +2,8 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-
-    <div>
-    </div>
-    <div>
-        <form method="post" class="form-inline mt-4">
+    <div class="form-inline mt-4 row">
+        <form method="post">
             <input type="text" class="form-control mr-2" required minlength="3" name="fullName" placeholder="Full name" />
             <input type="text" class="form-control mr-2" pattern="^[ 0-9]+$" minlength="4" maxlength="5"  name="exNumber" placeholder="Extension">
             <input type="text" class="form-control mr-2" pattern="^[ 0-9]+$" minlength="11" maxlength="11" name="mobileNumber" placeholder="Mobile">
@@ -24,7 +21,6 @@
     <form method="get" action="/phonebook" class="form-inline mt-4">
         <input type="text" class="form-control col-sm-3" name="filter" value="${filter?ifExists}">
         <button class="btn btn-primary ml-3" type="submit">Search</button>
-        <a class="btn btn-primary ml-5" href="/saveXml" >Update catalog</a>
     </form>
 
     <div class="my-3">

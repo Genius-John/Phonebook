@@ -13,7 +13,7 @@ public interface GroupRepository extends CrudRepository<Group, Long> {
 
     List<Group> findAllByOrderByOrderGroup ();
 
-    List<Group>
+    List<Group> findAll();
 
 
 

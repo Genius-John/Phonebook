@@ -1,5 +1,7 @@
 package ru.geniusjohn.phonebook.domain;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,12 +13,12 @@ public class Group {
     private Long orderGroup;
     private String groupName;
 
-    public Group(Long orderGroup, String groupName) {
-        this.groupName = groupName;
-        this.orderGroup = orderGroup;
+    public Group() {
     }
 
-    public Group() {
+    public Group(Long orderGroup, String groupName) {
+        this.orderGroup = orderGroup;
+        this.groupName = groupName;
     }
 
     public Long getOrderGroup() {
@@ -43,8 +45,12 @@ public class Group {
         this.groupName = groupName;
     }
 
-//    public ItemMenu mapToItemMenu() {
-//        // Url - захардкодить
-//        return new ItemMenu(order + ". " + groupName, "http://127.0.0.1/getGroupXml/" + id);
-//    }
+    public MenuItem mapToItemMenu(String baseUrl) {
+        // @TODO Url - inject
+        return new MenuItem(groupName, baseUrl + id);
+    }
+
+    public SoftKeyItem mapToSoftKeyMenu(String baseUrl) {
+        return new SoftKeyItem(orderGroup, baseUrl + id);
+    }
 }

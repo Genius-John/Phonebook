@@ -1,15 +1,30 @@
 package ru.geniusjohn.phonebook.domain;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SoftKeyItem {
-    private String name;
+    @XmlElement(name = "Name")
+    private Long keyNum;
+    @XmlElement(name = "URL")
     private String url;
 
-    public String getName() {
-        return name;
+    public SoftKeyItem() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public SoftKeyItem(Long keyNum, String url) {
+        this.keyNum = keyNum;
+        this.url = url;
+    }
+
+    public Long getKeyNum() {
+        return keyNum;
+    }
+
+    public void setKeyNum(Long keyNum) {
+        this.keyNum = keyNum;
     }
 
     public String getUrl() {

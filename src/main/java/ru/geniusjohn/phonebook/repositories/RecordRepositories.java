@@ -12,6 +12,8 @@ public interface RecordRepositories extends CrudRepository<Record, Long> {
 
     List<Record> findAllByGroup (Group groupId);
 
+    List<Record> findAllByOrderByFullName();
+
     List<Record> findByFullName (String fullName);
 
     List<Record> findAllByFullNameContainsIgnoreCase (String fullName);

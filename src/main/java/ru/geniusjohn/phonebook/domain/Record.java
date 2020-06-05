@@ -42,7 +42,6 @@ public class Record {
         return group;
     }
 
-
     public void setGroup(Group group) {
         this.group = group;
     }
