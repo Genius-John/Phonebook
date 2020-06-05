@@ -56,6 +56,7 @@ public class XmlController {
         menu.setSoftKeyItems(new ArrayList<>());
 
         for (Group group: groupRepository.findAllByOrderByOrderGroup()) {
+            //@TODO надо бы разобраться с этими двумя строками....
             menu.getMenuItems().add(group.mapToItemMenu(baseUrl + "/getGroupXml/"));
             menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(baseUrl + "/getGroupXml/"));
         }

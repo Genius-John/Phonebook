@@ -46,7 +46,6 @@ public class Group {
     }
 
     public MenuItem mapToItemMenu(String baseUrl) {
-        // @TODO Url - inject
         return new MenuItem(groupName, baseUrl + id);
     }
 
