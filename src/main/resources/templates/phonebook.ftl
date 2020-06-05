@@ -5,13 +5,13 @@
     <form method="post">
         <div class="form-inline mt-4 row">
             <div class="col-sm-12 col-lg-3" style="margin-top: 10px">
-                <input type="text" class="form-control" style="width: 100%" required minlength="3" name="fullName" placeholder="Full name" />
+                <input type="text" class="form-control" style="width: 100%" required minlength="3" name="fullName" placeholder="Имя/Должность*" />
+            </div>
+            <div class="col-sm-12 col-lg-2" style="margin-top: 10px">
+                <input type="text" class="form-control" style="width: 100%" pattern="^[ 0-9]+$" minlength="4" maxlength="5"  name="exNumber" placeholder="Вн. номер">
             </div>
             <div class="col-sm-12 col-lg-3" style="margin-top: 10px">
-                <input type="text" class="form-control" style="width: 100%" pattern="^[ 0-9]+$" minlength="4" maxlength="5"  name="exNumber" placeholder="Extension">
-            </div>
-            <div class="col-sm-12 col-lg-3" style="margin-top: 10px">
-                <input type="text" class="form-control" style="width: 100%" pattern="^[ 0-9]+$" minlength="11" maxlength="11" name="mobileNumber" placeholder="Mobile">
+                <input type="text" class="form-control" style="width: 100%" pattern="^[ 0-9]+$" minlength="11" maxlength="11" name="mobileNumber" placeholder="Моб. номер">
             </div>
             <div class=" col-sm-12 col-lg-2" style="margin-top: 10px">
                 <select class="custom-select" style="width: 100%" name="groupName">
@@ -20,15 +20,21 @@
                     </#list>
                 </select>
             </div>
-            <div class="col-sm-12 col-lg-1" style="margin-top: 10px">
-                <button class="btn btn-primary" style="width: 100%" type="submit">Add</button>
+            <div class="col-sm-12 col-lg-2" style="margin-top: 10px">
+                <button class="btn btn-primary" style="width: 100%" type="submit">Добавить</button>
             </div>
         </div>
     </form>
 
-    <form method="get" action="/phonebook" class="form-inline mt-4">
-        <input type="text" class="form-control col-sm-3" name="filter" value="${filter?ifExists}">
-        <button class="btn btn-primary ml-3" type="submit">Search</button>
+    <form method="get" action="/phonebook">
+        <div class="form-inline mt-4 row">
+            <div class="col-sm-12 col-lg-3">
+                <input type="text" class="form-control" style="width: 100%" minlength="3" name="filter" value="${filter?ifExists}" placeholder="Поиск">
+            </div>
+            <div class="col-sm-12 col-lg-2 my-2">
+                <button class="btn btn-primary" style="width: 100%" type="submit">Найти</button>
+            </div>
+        </div>
     </form>
 
     <div class="my-3">
@@ -41,11 +47,11 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Full name</th>
-                    <th>Extension</th>
-                    <th>Mobile</th>
-                    <th>Group</th>
-                    <th class="text-center">Action</th>
+                    <th>Имя/должность</th>
+                    <th>Вн. номер</th>
+                    <th>Моб. номер</th>
+                    <th>Группа</th>
+                    <th class="text-center">Действие</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,8 +62,8 @@
                             <td>${record.mobileNumber}</td>
                             <td>${record.groupName}</td>
                             <td class="text-center">
-                                <a class="btn btn-danger" href="/phonebook/del/${record.id}">delete</a>
-                                <a class="btn btn-success" href="/phonebook/${record.id}">edit</a>
+                                <a class="btn btn-success" href="/phonebook/${record.id}">изменить</a>
+                                <a class="btn btn-danger" href="/phonebook/del/${record.id}">удалить</a>
                             </td>
                         </tr>
                     </#list>

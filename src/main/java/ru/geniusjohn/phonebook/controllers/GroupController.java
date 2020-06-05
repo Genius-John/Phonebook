@@ -43,7 +43,7 @@ public class GroupController {
                           Map<String, Object> model) {
         Group group = new Group(orderGroup, groupName);
         groupRepository.save(group);
-        Iterable<Group> groups = groupRepository.findAll();
+        Iterable<Group> groups = groupRepository.findAllByOrderByOrderGroup();
         model.put("groups", groups);
         return "redirect:/groupList";
     }

@@ -1,19 +1,15 @@
 package ru.geniusjohn.phonebook.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.geniusjohn.phonebook.domain.Group;
-import ru.geniusjohn.phonebook.domain.Groups;
 import ru.geniusjohn.phonebook.domain.Menu;
 import ru.geniusjohn.phonebook.domain.Records;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepositories;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -25,12 +21,8 @@ import java.util.ArrayList;
 @Controller
 public class XmlController {
 
-    private static final Logger logger = LoggerFactory.getLogger(XmlController.class);
-
     private RecordRepositories recordRepositories;
-
     private GroupRepository groupRepository;
-
     private String baseUrl;
 
     @Autowired
@@ -54,20 +46,17 @@ public class XmlController {
         Menu menu = new Menu();
         menu.setMenuItems(new ArrayList<>());
         menu.setSoftKeyItems(new ArrayList<>());
-
         for (Group group: groupRepository.findAllByOrderByOrderGroup()) {
             //@TODO надо бы разобраться с этими двумя строками....
             menu.getMenuItems().add(group.mapToItemMenu(baseUrl + "/getGroupXml/"));
             menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(baseUrl + "/getGroupXml/"));
         }
         OutputStream responseOutputStream = response.getOutputStream();
-
         JAXBContext context = JAXBContext.newInstance(Menu.class);
         Marshaller mar = context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         mar.marshal(menu, responseOutputStream);
-
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", "attachment; filename=menu.xml");
         response.getOutputStream().flush();
@@ -79,15 +68,12 @@ public class XmlController {
         Records records = new Records();
         records.setRecords(new ArrayList<>());
         records.setRecords(recordRepositories.findAllByGroup(group));
-
         OutputStream responseOutputStream = response.getOutputStream();
-
         JAXBContext context = JAXBContext.newInstance(Records.class);
         Marshaller mar = context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         mar.marshal(records, responseOutputStream);
-
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", String.format("attachment; filename=%s.xml", "group_" + group.getId().toString()));
         response.getOutputStream().flush();

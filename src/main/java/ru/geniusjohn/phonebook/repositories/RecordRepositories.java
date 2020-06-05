@@ -14,10 +14,6 @@ public interface RecordRepositories extends CrudRepository<Record, Long> {
 
     List<Record> findAllByOrderByFullName();
 
-    List<Record> findByFullName (String fullName);
-
-    List<Record> findAllByFullNameContainsIgnoreCase (String fullName);
-
-    List<Record> findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContains (String fullName, String mobileNumber, String exNumber);
+    List<Record> findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName (String fullName, String mobileNumber, String exNumber);
 
 }

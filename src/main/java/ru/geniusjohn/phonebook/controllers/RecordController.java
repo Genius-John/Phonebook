@@ -41,9 +41,9 @@ public class RecordController {
         Iterable<Record> records;
         Iterable<Group> groups = groupRepository.findAll();
         if (filter != null && !filter.isEmpty()) {
-            records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContains(filter, filter, filter);
+            records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName(filter, filter, filter);
         }else {
-            records = recordRepositories.findAll();
+            records = recordRepositories.findAllByOrderByFullName();
         }
         model.addAttribute("records", records);
         model.addAttribute("filter", filter);
@@ -59,7 +59,9 @@ public class RecordController {
     @GetMapping("/phonebook/{record}") // Страница редактирования записи
     public String update(@PathVariable("record") Record record, Model model) {
         Iterable<Group> groups = groupRepository.findAll();
+        Iterable<Record> records = recordRepositories.findAll();
         model.addAttribute("groups", groups);
+        model.addAttribute("records", records);
         return "editRecord";
     }
 
