@@ -56,29 +56,29 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <div>
-                            <form action="/phonebook/update/${record.id}" method="post">
-                                <td><input type="text" class="form-control mr-2" minlength="3" name="fullName" value="${record.fullName}"></td>
-                                <td><input type="text" class="form-control mr-2" pattern="^[ 0-9]+$" minlength="4" maxlength="5" name="exNumber"  value="${record.exNumber}"></td>
-                                <td><input type="text" class="form-control mr-2" pattern="^[ 0-9]+$" minlength="11" maxlength="11" name="mobileNumber" value="${record.mobileNumber}"></td>
-                                <td>
-                                    <div class="col-auto">
-                                        <select class="custom-select mr-sm-2" name="groupName">
-                                            <#list groups as group>
-                                                <option>${group.groupName}</option>
-                                            </#list>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-success">сохранить</button>
-                                    <a class="btn btn-danger" href="/phonebook">отмена</a>
-                                </td>
-                            </form>
-                        </div>
+                        <form action="/phonebook/update/${record.getId()}" method="post">
+                            <td><input type="text" class="form-control mr-2" minlength="3" name="fullName" value="${record.getFullName()}"></td>
+                            <td><input type="text" class="form-control mr-2" pattern="^[ 0-9]+$" minlength="4" maxlength="5" name="exNumber"  value="${record.getExNumber()}"></td>
+                            <td><input type="text" class="form-control mr-2" pattern="^[ 0-9]+$" minlength="11" maxlength="11" name="mobileNumber" value="${record.getMobileNumber()}"></td>
+                            <td>
+                                <div class="col-auto">
+                                    <select class="custom-select mr-sm-2" name="groupName">
+                                        <#list groups as group>
+                                            <option <#if group.getId() == record.getGroup().getId()>selected</#if>>${group.getGroupName()}</option>
+                                        </#list>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-success">сохранить</button>
+                                <a class="btn btn-danger" href="/phonebook">отмена</a>
+                            </td>
+                        </form>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+
 </@c.page>
