@@ -63,7 +63,7 @@
                             <td>${record.groupName}</td>
                             <td class="text-center">
                                 <a class="btn btn-success" href="/phonebook/${record.id}">изменить</a>
-                                <a class="btn btn-danger" href="/phonebook/del/${record.id}">удалить</a>
+                                <a class="btn btn-danger" href="/phonebook/del/${record.id}" onClick="return confirm('Вы уверены что хотите удалить запись?')">удалить</a>
                             </td>
                         </tr>
                     </#list>
