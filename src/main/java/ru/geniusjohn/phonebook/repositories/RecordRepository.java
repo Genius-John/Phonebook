@@ -6,11 +6,11 @@ import ru.geniusjohn.phonebook.domain.Record;
 
 import java.util.List;
 
-public interface RecordRepositories extends CrudRepository<Record, Long> {
+public interface RecordRepository extends CrudRepository<Record, Long> {
 
     List<Record> findAll();
 
-    List<Record> findAllByGroup (Group groupId);
+    List<Record> findAllByGroup (Group group);
 
     List<Record> findAllByOrderByFullName();
 

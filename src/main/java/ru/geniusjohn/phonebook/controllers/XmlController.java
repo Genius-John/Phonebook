@@ -12,7 +12,7 @@ import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.Menu;
 import ru.geniusjohn.phonebook.domain.Records;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
-import ru.geniusjohn.phonebook.repositories.RecordRepositories;
+import ru.geniusjohn.phonebook.repositories.RecordRepository;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -27,12 +27,12 @@ public class XmlController {
 
     private static final Logger logger = LoggerFactory.getLogger(XmlController.class);
 
-    private RecordRepositories recordRepositories;
+    private RecordRepository recordRepositories;
     private GroupRepository groupRepository;
     private String baseUrl;
 
     @Autowired
-    public void setRecordRepositories(RecordRepositories recordRepositories) {
+    public void setRecordRepositories(RecordRepository recordRepositories) {
         this.recordRepositories = recordRepositories;
     }
 

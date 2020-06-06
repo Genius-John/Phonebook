@@ -64,7 +64,7 @@
                                 <div class="col-auto">
                                     <select class="custom-select mr-sm-2" name="groupName">
                                         <#list groups as group>
-                                            <option <#if group.getId() == record.getGroup().getId()>selected</#if>>${group.getGroupName()}</option>
+                                            <option value="${group.getId()}" <#if group.getId() == record.getGroup().getId()>selected</#if>>${group.getGroupName()}</option>
                                         </#list>
                                     </select>
                                 </div>

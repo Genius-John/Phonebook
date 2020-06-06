@@ -9,24 +9,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.Record;
-import ru.geniusjohn.phonebook.repositories.GroupRepository;
-import ru.geniusjohn.phonebook.repositories.RecordRepositories;
+import ru.geniusjohn.phonebook.service.GroupService;
+import ru.geniusjohn.phonebook.service.RecordService;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class RecordController {
 
-    private RecordRepositories recordRepositories;
-    private GroupRepository groupRepository;
-
+    private RecordService recordService;
+    private GroupService groupService;
+    
     @Autowired
-    public void setRecordRepositories(RecordRepositories recordRepositories) {
-        this.recordRepositories = recordRepositories;
+    public void setRecordService(RecordService recordService) {
+        this.recordService = recordService;
     }
 
     @Autowired
-    public void setGroupRepository(GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
+    public void setGroupService(GroupService groupService) {
+        this.groupService = groupService;
     }
 
     @GetMapping ("/") // Тестовая страница
@@ -39,11 +42,11 @@ public class RecordController {
                            String filter,
                            Model model) {
         Iterable<Record> records;
-        Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
+        Iterable<Group> groups = groupService.findByOrderByOrderGroup();
         if (filter != null && !filter.isEmpty()) {
-            records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName(filter, filter, filter);
+            records = recordService.findFilteredByFullNameMobileNumberExNumber(filter, filter, filter);
         }else {
-            records = recordRepositories.findAllByOrderByFullName();
+            records = recordService.findByOrderByFullName();
         }
         model.addAttribute("records", records);
         model.addAttribute("filter", filter);
@@ -53,12 +56,12 @@ public class RecordController {
 
     @GetMapping("/phonebook/del/{record}") //Удаление записи
     public String delete(@PathVariable("record") Record record) {
-        recordRepositories.delete(record);
+        recordService.delete(record);
         return "redirect:/phonebook";
     }
     @GetMapping("/phonebook/{record}") // Страница редактирования записи
     public String update(@PathVariable() Record record, Model model) {
-        Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
+        Iterable<Group> groups = groupService.findByOrderByOrderGroup();
 //        Iterable<Record> records = recordRepositories.findAllByOrderByFullName();
         model.addAttribute("groups", groups);
         model.addAttribute("record", record);
@@ -72,26 +75,33 @@ public class RecordController {
                         @RequestParam String mobileNumber,
                         @RequestParam String groupName,
                         Map<String, Object> model) {
-        Group group = groupRepository.findByGroupName(groupName);   // есть сомнения...
+        Group group = groupService.findByGroupName(groupName);   // есть сомнения...
         Record record = new Record(fullName, exNumber, mobileNumber, group);
-        recordRepositories.save(record);
-        Iterable<Record> records = recordRepositories.findAllByOrderByFullName();
+        recordService.save(record);
+        Iterable<Record> records = recordService.findByOrderByFullName();
         model.put("records", records);
         return "redirect:/phonebook";
     }
 
     @PostMapping("/phonebook/update/{record}")
-    public String save(@RequestParam String fullName,
-                        @RequestParam String exNumber,
-                        @RequestParam String mobileNumber,
-                        @RequestParam String groupName,
-                        @PathVariable("record") Record record) {
-        Group group = groupRepository.findByGroupName(groupName);
+    public String save(
+            HttpServletResponse response,
+            @RequestParam String fullName,
+            @RequestParam String exNumber,
+            @RequestParam String mobileNumber,
+            @RequestParam String groupId,
+            @PathVariable("record") Record record
+    ) {
+        Optional<Group> group = groupService.findById(Long.parseLong(groupId));
+        if (!group.isPresent()) {
+            response.setStatus(404);
+            return "";
+        }
         record.setFullName(fullName);
         record.setExNumber(exNumber);
         record.setMobileNumber(mobileNumber);
-        record.setGroup(group);
-        recordRepositories.save(record);
+        record.setGroup(group.get());
+        recordService.save(record);
         return "redirect:/phonebook";
     }
 }
