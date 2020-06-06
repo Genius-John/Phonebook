@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement(name = "YealinkIPPhoneDirectory")
+@XmlRootElement(name = "YealinkIPPhoneMenu")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Menu {
 

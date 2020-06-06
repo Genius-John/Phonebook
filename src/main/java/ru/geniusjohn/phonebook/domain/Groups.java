@@ -3,7 +3,7 @@ package ru.geniusjohn.phonebook.domain;
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
-@XmlRootElement(name = "YealinkIPPhoneDirectory")
+@XmlRootElement(name = "YealinkIPPhoneMenu")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Groups {
 
