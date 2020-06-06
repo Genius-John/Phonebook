@@ -45,11 +45,11 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public MenuItem mapToItemMenu(String baseUrl) {
-        return new MenuItem(groupName, baseUrl + id);
+    public MenuItem mapToItemMenu(String url) {
+        return new MenuItem(groupName, url);
     }
 
-    public SoftKeyItem mapToSoftKeyMenu(String baseUrl) {
-        return new SoftKeyItem(orderGroup, baseUrl + id);
+    public SoftKeyItem mapToSoftKeyMenu(String url) {
+        return new SoftKeyItem(orderGroup, url);
     }
 }
