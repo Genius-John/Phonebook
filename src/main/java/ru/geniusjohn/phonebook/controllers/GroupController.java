@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
-import ru.geniusjohn.phonebook.repositories.RecordRepositories;
 
 import java.util.Map;
 
@@ -17,22 +16,15 @@ import java.util.Map;
 public class GroupController {
 
     private GroupRepository groupRepository;
-    private RecordRepositories recordRepositories;
 
     @Autowired
     public void setGroupRepository(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
     }
 
-    @Autowired
-    public void setRecordRepositories(RecordRepositories recordRepositories) {
-        this.recordRepositories = recordRepositories;
-    }
-
     @GetMapping("/groupList") // List of groups
     public String mainPage(Model model) {
-//        Iterable<Group> groups = groupRepository.findAll();
-        Iterable<Group> groups = groupRepository.findAllByOrderByOrderGroup();
+        Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         model.addAttribute("groups", groups);
         return "groupList";
     }
@@ -43,7 +35,7 @@ public class GroupController {
                           Map<String, Object> model) {
         Group group = new Group(orderGroup, groupName);
         groupRepository.save(group);
-        Iterable<Group> groups = groupRepository.findAllByOrderByOrderGroup();
+        Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         model.put("groups", groups);
         return "redirect:/groupList";
     }

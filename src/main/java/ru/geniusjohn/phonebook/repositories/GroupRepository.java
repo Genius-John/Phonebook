@@ -11,7 +11,7 @@ public interface GroupRepository extends CrudRepository<Group, Long> {
 
     List<Group> findById (Group groupId);
 
-    List<Group> findAllByOrderByOrderGroup ();
+    List<Group> findByOrderByOrderGroup();
 
     List<Group> findAll();
 

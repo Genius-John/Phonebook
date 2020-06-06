@@ -39,7 +39,7 @@ public class RecordController {
                            String filter,
                            Model model) {
         Iterable<Record> records;
-        Iterable<Group> groups = groupRepository.findAll();
+        Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         if (filter != null && !filter.isEmpty()) {
             records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName(filter, filter, filter);
         }else {
@@ -57,11 +57,11 @@ public class RecordController {
         return "redirect:/phonebook";
     }
     @GetMapping("/phonebook/{record}") // Страница редактирования записи
-    public String update(@PathVariable("record") Record record, Model model) {
-        Iterable<Group> groups = groupRepository.findAll();
-        Iterable<Record> records = recordRepositories.findAll();
+    public String update(@PathVariable() Record record, Model model) {
+        Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
+//        Iterable<Record> records = recordRepositories.findAllByOrderByFullName();
         model.addAttribute("groups", groups);
-        model.addAttribute("records", records);
+        model.addAttribute("record", record);
         return "editRecord";
     }
 
@@ -75,7 +75,7 @@ public class RecordController {
         Group group = groupRepository.findByGroupName(groupName);   // есть сомнения...
         Record record = new Record(fullName, exNumber, mobileNumber, group);
         recordRepositories.save(record);
-        Iterable<Record> records = recordRepositories.findAll();
+        Iterable<Record> records = recordRepositories.findAllByOrderByFullName();
         model.put("records", records);
         return "redirect:/phonebook";
     }
