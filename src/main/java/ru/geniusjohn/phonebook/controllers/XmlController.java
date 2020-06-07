@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.Menu;
@@ -26,7 +27,10 @@ import java.util.Map;
 public class XmlController {
 
     private static final Logger logger = LoggerFactory.getLogger(XmlController.class);
-
+    private String[] userAgent;
+    private String macAddress;
+    private String vendor;
+    private String model;
     private RecordRepositories recordRepositories;
     private GroupRepository groupRepository;
     private String baseUrl;
@@ -52,6 +56,19 @@ public class XmlController {
         headers.forEach((key, value) -> {
             logger.info(key + " = " + value);
         });
+//данные от телефона
+        userAgent = headers.get("user-agent").split(" ");
+        if (userAgent[3].matches("([a-f0-9]{2}:){5}[a-f0-9]{2}")) {
+            vendor = userAgent[0];
+            model = userAgent[1];
+            macAddress = userAgent[3];
+            System.out.println("Vendor: " + vendor);
+            System.out.println("Model: " + model);
+            System.out.println("MAC-address: " + macAddress);
+        } else {
+            System.out.println("Модель телефона не опознана");
+        }
+
         Menu menu = new Menu();
         menu.setMenuItems(new ArrayList<>());
         menu.setSoftKeyItems(new ArrayList<>());
