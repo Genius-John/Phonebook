@@ -11,6 +11,9 @@ import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.Record;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepositories;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -18,6 +21,7 @@ public class RecordController {
 
     private RecordRepositories recordRepositories;
     private GroupRepository groupRepository;
+    Date date;
 
     @Autowired
     public void setRecordRepositories(RecordRepositories recordRepositories) {
@@ -37,7 +41,18 @@ public class RecordController {
     @GetMapping("/phonebook") //Вывод записей с фильтром
     public String mainPage(@RequestParam(required = false, defaultValue = "")
                            String filter,
-                           Model model) {
+                           Model model,
+                           HttpServletRequest request) {
+         date = new Date();
+//        Получение IP посетителя главной страницы
+        String remoteAddr = "";
+        if (remoteAddr != null) {
+            remoteAddr = request.getHeader("X-FORWARDER-FOR");
+            if (remoteAddr == null || "".equals(remoteAddr)) {
+                remoteAddr = request.getRemoteAddr();
+            }
+        }
+        System.out.println("___________\n" + "Время посещения: " + date + "\nIP адрес посетителя: " + remoteAddr + "\n___________");
         Iterable<Record> records;
         Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         if (filter != null && !filter.isEmpty()) {

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,8 @@ import ru.geniusjohn.phonebook.domain.Menu;
 import ru.geniusjohn.phonebook.domain.Records;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepositories;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -51,23 +54,34 @@ public class XmlController {
     }
 
     @GetMapping("/getMenuXml")
-    public void getMenu(HttpServletResponse response, @RequestHeader Map<String, String> headers) throws JAXBException, IOException {
+    public void getMenu(HttpServletResponse response, @RequestHeader Map<String, String> headers, HttpServletRequest request) throws JAXBException, IOException {
         logger.info("Header list:");
         headers.forEach((key, value) -> {
             logger.info(key + " = " + value);
         });
+//        Получение IP
+        String remoteAddr = "";
+        if (remoteAddr != null) {
+            remoteAddr = request.getHeader("X-FORWARDER-FOR");
+            if (remoteAddr == null || "".equals(remoteAddr)) {
+                remoteAddr = request.getRemoteAddr();
+            }
+        }
+
 //данные от телефона
         userAgent = headers.get("user-agent").split(" ");
-        if (userAgent[3].matches("([a-f0-9]{2}:){5}[a-f0-9]{2}")) {
+        if (userAgent[3].matches("([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}")) {
             vendor = userAgent[0];
             model = userAgent[1];
             macAddress = userAgent[3];
-            System.out.println("Vendor: " + vendor);
+            System.out.println("___________\n" + "Vendor: " + vendor);
             System.out.println("Model: " + model);
             System.out.println("MAC-address: " + macAddress);
+            System.out.println("IP адрес: " + remoteAddr + "\n___________");
         } else {
-            System.out.println("Модель телефона не опознана");
+            System.out.println("___________\n" + "Модель телефона не опознана" + "\n___________");
         }
+
 
         Menu menu = new Menu();
         menu.setMenuItems(new ArrayList<>());
