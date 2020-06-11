@@ -1,12 +1,11 @@
 package ru.geniusjohn.phonebook.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.Record;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
@@ -18,6 +17,9 @@ import java.util.Map;
 
 @Controller
 public class RecordController {
+
+    private static final Logger logger = LoggerFactory.getLogger(XmlController.class);
+
 
     private RecordRepositories recordRepositories;
     private GroupRepository groupRepository;
@@ -42,17 +44,20 @@ public class RecordController {
     public String mainPage(@RequestParam(required = false, defaultValue = "")
                            String filter,
                            Model model,
-                           HttpServletRequest request) {
-         date = new Date();
+                           HttpServletRequest request,
+                           @RequestHeader Map<String, String> headers) {
+        date = new Date();
+        logger.info("Header list:");
+        headers.forEach((key, value) -> {
+            logger.info(key + " = " + value);
+        });
 //        Получение IP посетителя главной страницы
-        String remoteAddr = "";
-        if (remoteAddr != null) {
-            remoteAddr = request.getHeader("X-FORWARDER-FOR");
-            if (remoteAddr == null || "".equals(remoteAddr)) {
-                remoteAddr = request.getRemoteAddr();
-            }
-        }
-        System.out.println("___________\n" + "Время посещения: " + date + "\nIP адрес посетителя: " + remoteAddr + "\n___________");
+        System.out.println("___________\n" +
+                "Время посещения: " + date +
+                "\nPublic IP: " + request.getRemoteAddr() +
+                "\nPrivate IP: " + request.getHeader("X-FORWARDED-FOR") +
+                "\n___________");
+
         Iterable<Record> records;
         Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         if (filter != null && !filter.isEmpty()) {
