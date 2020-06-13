@@ -16,8 +16,6 @@ import java.util.Map;
 @Controller
 public class RecordController {
 
-    private static final Logger logger = LoggerFactory.getLogger(RecordController.class);
-
     private RecordRepositories recordRepositories;
     private GroupRepository groupRepository;
 
