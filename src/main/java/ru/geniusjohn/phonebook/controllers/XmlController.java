@@ -56,9 +56,10 @@ public class XmlController {
         menu.setMenuItems(new ArrayList<>());
         menu.setSoftKeyItems(new ArrayList<>());
         for (Group group: groupRepository.findByOrderByOrderGroup()) {
-            //@TODO надо бы разобраться с этими двумя строками....
-            menu.getMenuItems().add(group.mapToItemMenu(String.format("%s/getGroupXml/%d", baseUrl, group.getId())));
-            menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(String.format("%s/getGroupXml/%d", baseUrl, group.getId())));
+            //@TODO надо бы разобраться с этими тремя строками....
+            String url = String.format("%s/getGroupXml/%d", baseUrl, group.getId());
+            menu.getMenuItems().add(group.mapToItemMenu(url));
+            menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(url));
         }
         OutputStream responseOutputStream = response.getOutputStream();
         JAXBContext context = JAXBContext.newInstance(Menu.class);
