@@ -29,7 +29,6 @@ import java.util.Map;
 @Controller
 public class XmlController {
 
-    private static final Logger logger = LoggerFactory.getLogger(XmlController.class);
     private String[] userAgent;
     private String macAddress;
     private String vendor;
@@ -61,24 +60,27 @@ public class XmlController {
             vendor = userAgent[0];
             model = userAgent[1];
             macAddress = userAgent[3];
-            System.out.println("___________\n" + "Vendor: " + vendor);
+            System.out.println("___________");
+            System.out.println("Vendor: " + vendor);
             System.out.println("Model: " + model);
             System.out.println("MAC-address: " + macAddress);
-            System.out.println("IP адрес: " + request.getRemoteAddr() + "\n___________");
+            System.out.println("IP адрес: " + request.getRemoteAddr());
+            System.out.println("___________");
         } else {
-            System.out.println("\n___________" +
-                    "\nIP адрес: " + request.getRemoteAddr() +
-                    "\nМодель телефона не опознана" +
-                    "\n___________");
+            System.out.println("___________");
+            System.out.println("IP адрес: " + request.getRemoteAddr());
+            System.out.println("Модель телефона не опознана");
+            System.out.println("___________");        ;
         }
 
         Menu menu = new Menu();
         menu.setMenuItems(new ArrayList<>());
         menu.setSoftKeyItems(new ArrayList<>());
         for (Group group: groupRepository.findByOrderByOrderGroup()) {
-            //@TODO надо бы разобраться с этими двумя строками....
-            menu.getMenuItems().add(group.mapToItemMenu(String.format("%s/getGroupXml/%d", baseUrl, group.getId())));
-            menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(String.format("%s/getGroupXml/%d", baseUrl, group.getId())));
+            //@TODO надо бы разобраться с этими тремя строками....
+            String url = String.format("%s/getGroupXml/%d", baseUrl, group.getId());
+            menu.getMenuItems().add(group.mapToItemMenu(url));
+            menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(url));
         }
         OutputStream responseOutputStream = response.getOutputStream();
         JAXBContext context = JAXBContext.newInstance(Menu.class);
