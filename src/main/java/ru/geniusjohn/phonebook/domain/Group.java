@@ -46,7 +46,7 @@ public class Group {
     }
 
     public MenuItem mapToItemMenu(String url) {
-        return new MenuItem(groupName, url);
+        return new MenuItem(orderGroup + ". " + groupName, url);
     }
 
     public SoftKeyItem mapToSoftKeyMenu(String url) {
