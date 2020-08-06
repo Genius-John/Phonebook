@@ -37,10 +37,7 @@
         </div>
     </form>
 
-    <div class="my-3">
-        <a href="/phonebook"><b class="mr-3">List of records</b></a>
-        <a href="/groupList"><b>Groups</b></a>
-    </div>
+
 
     <div class="row  mt-3">
         <div class="col">
