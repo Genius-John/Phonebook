@@ -59,7 +59,6 @@ public class RecordController {
     @GetMapping("/phonebook/{record}") // Страница редактирования записи
     public String update(@PathVariable() Record record, Model model) {
         Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
-//        Iterable<Record> records = recordRepositories.findAllByOrderByFullName();
         model.addAttribute("groups", groups);
         model.addAttribute("record", record);
         return "editRecord";
@@ -72,7 +71,7 @@ public class RecordController {
                         @RequestParam String mobileNumber,
                         @RequestParam String groupName,
                         Map<String, Object> model) {
-        Group group = groupRepository.findByGroupName(groupName);   // есть сомнения...
+        Group group = groupRepository.findByGroupName(groupName);   //todo есть сомнения...
         Record record = new Record(fullName, exNumber, mobileNumber, group);
         recordRepositories.save(record);
         Iterable<Record> records = recordRepositories.findAllByOrderByFullName();

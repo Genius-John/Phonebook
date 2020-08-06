@@ -3,16 +3,13 @@ package ru.geniusjohn.phonebook.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
-
 import java.util.Map;
 
 @Controller
+@RequestMapping ("/phonebook")
 public class GroupController {
 
     private GroupRepository groupRepository;
@@ -37,7 +34,7 @@ public class GroupController {
         groupRepository.save(group);
         Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         model.put("groups", groups);
-        return "redirect:/groupList";
+        return "redirect:/phonebook/groupList";
     }
 
     @PostMapping("/groupList/{group}")  //Update group
@@ -45,13 +42,13 @@ public class GroupController {
         group.setOrderGroup(orderGroup);
         group.setGroupName(groupName);
         groupRepository.save(group);
-        return "redirect:/groupList";
+        return "redirect:/phonebook/groupList";
     }
 
     @GetMapping ("/groupList/del/{group}") // Delete group
     public String delete (@PathVariable("group") Group group) {
         groupRepository.delete(group);
-        return "redirect:/groupList";
+        return "redirect:/phonebook/groupList";
     }
 
 }
