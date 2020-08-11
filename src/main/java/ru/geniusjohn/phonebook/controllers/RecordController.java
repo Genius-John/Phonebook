@@ -37,14 +37,26 @@ public class RecordController {
     @GetMapping("/phonebook") //Вывод записей с фильтром
     public String mainPage(@RequestParam(required = false, defaultValue = "")
                            String filter,
+                           @RequestParam(required = false, defaultValue = "")
+                           String filterGroupName,
                            Model model) {
         Iterable<Record> records;
         Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
-        if (filter != null && !filter.isEmpty()) {
-            records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName(filter, filter, filter);
-        }else {
-            records = recordRepositories.findAllByOrderByFullName();
+        Group group = groupRepository.findByGroupName(filterGroupName);
+
+        if (group != null) {
+            records = recordRepositories.findAllByGroupOrderByFullName(group);
+        } else {
+            records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName (filter, filter, filter);
         }
+
+        //добавить проверку ↑
+//        if (filter != null && !filter.isEmpty()) {
+//            records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName (filter, filter, filter);
+//        }
+//        else {
+//            records = recordRepositories.findAllByOrderByFullName();
+//        }
         model.addAttribute("records", records);
         model.addAttribute("filter", filter);
         model.addAttribute("groups", groups);

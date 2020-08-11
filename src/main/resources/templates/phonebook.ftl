@@ -16,7 +16,7 @@
             <div class=" col-sm-12 col-lg-2" style="margin-top: 10px">
                 <select class="custom-select" style="width: 100%" name="groupName">
                     <#list groups as group>
-                        <option value="${group.groupName}">${group.groupName}</option>
+                        <option>${group.groupName}</option>
                     </#list>
                 </select>
             </div>
@@ -31,13 +31,19 @@
             <div class="col-sm-12 col-lg-3">
                 <input type="text" class="form-control" style="width: 100%" minlength="3" name="filter" value="${filter?ifExists}" placeholder="Поиск">
             </div>
+            <div class="col-sm-12 col-lg-2">
+                <select style="width: 100%" class="custom-select" style="width: 100%" name="filterGroupName">
+                    <option selected>Все группы</option>
+                    <#list groups as group>
+                        <option value="${group.groupName}">${group.groupName}</option>
+                    </#list>
+                </select>
+            </div>
             <div class="col-sm-12 col-lg-2 my-2">
                 <button class="btn btn-primary" style="width: 100%" type="submit">Найти</button>
             </div>
         </div>
     </form>
-
-
 
     <div class="row  mt-3">
         <div class="col">

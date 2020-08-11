@@ -22,6 +22,7 @@ import javax.xml.bind.Marshaller;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -50,10 +51,12 @@ public class XmlController {
 
     @GetMapping("/phonebook/getMenuXml")
     public void getMenu(HttpServletResponse response, @RequestHeader Map<String, String> headers,  HttpServletRequest request) throws JAXBException, IOException {
+        //нужно ли?
         logger.info("Header list:");
         headers.forEach((key, value) -> {
             logger.info(key + " = " + value);
         });
+        Date date = new Date();
         //сведения о клиенте menuXml
         String[] userAgent = headers.get("user-agent").split(" ");
         if (userAgent[3].matches("([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}")) {
@@ -61,6 +64,7 @@ public class XmlController {
             String model = userAgent[1];
             String macAddress = userAgent[3];
             System.out.println("___________");
+            System.out.println(date);
             System.out.println("Vendor: " + vendor);
             System.out.println("Model: " + model);
             System.out.println("MAC-address: " + macAddress);
@@ -68,6 +72,7 @@ public class XmlController {
             System.out.println("___________");
         } else {
             System.out.println("___________");
+            System.out.println(date);
             System.out.println("IP адрес: " + request.getRemoteAddr());
             System.out.println("Модель телефона не опознана");
             System.out.println("___________");
