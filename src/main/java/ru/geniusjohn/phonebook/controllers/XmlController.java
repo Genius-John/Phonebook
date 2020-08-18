@@ -12,7 +12,7 @@ import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.Menu;
 import ru.geniusjohn.phonebook.domain.Records;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
-import ru.geniusjohn.phonebook.repositories.RecordRepositories;
+import ru.geniusjohn.phonebook.repositories.RecordRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,13 +30,13 @@ public class XmlController {
 
     private static final Logger logger = LoggerFactory.getLogger(XmlController.class);
 
-    private RecordRepositories recordRepositories;
+    private RecordRepository recordRepository;
     private GroupRepository groupRepository;
     private String baseUrl;
 
     @Autowired
-    public void setRecordRepositories(RecordRepositories recordRepositories) {
-        this.recordRepositories = recordRepositories;
+    public void setRecordRepositories(RecordRepository recordRepository) {
+        this.recordRepository = recordRepository;
     }
 
     @Autowired
@@ -52,10 +52,10 @@ public class XmlController {
     @GetMapping("/phonebook/getMenuXml")
     public void getMenu(HttpServletResponse response, @RequestHeader Map<String, String> headers,  HttpServletRequest request) throws JAXBException, IOException {
         //нужно ли?
-        logger.info("Header list:");
-        headers.forEach((key, value) -> {
-            logger.info(key + " = " + value);
-        });
+//        logger.info("Header list:");
+//        headers.forEach((key, value) -> {
+//            logger.info(key + " = " + value);
+//        });
         Date date = new Date();
         //сведения о клиенте menuXml
         String[] userAgent = headers.get("user-agent").split(" ");
@@ -63,19 +63,19 @@ public class XmlController {
             String vendor = userAgent[0];
             String model = userAgent[1];
             String macAddress = userAgent[3];
-            System.out.println("___________");
+            System.out.println("-----------");
             System.out.println(date);
             System.out.println("Vendor: " + vendor);
             System.out.println("Model: " + model);
             System.out.println("MAC-address: " + macAddress);
             System.out.println("IP адрес: " + request.getRemoteAddr());
-            System.out.println("___________");
+            System.out.println("-----------");
         } else {
-            System.out.println("___________");
+            System.out.println("-----------");
             System.out.println(date);
             System.out.println("IP адрес: " + request.getRemoteAddr());
             System.out.println("Модель телефона не опознана");
-            System.out.println("___________");
+            System.out.println("-----------");
         }
 
         Menu menu = new Menu();
@@ -102,7 +102,7 @@ public class XmlController {
 
         Records records = new Records();
         records.setRecords(new ArrayList<>());
-        records.setRecords(recordRepositories.findAllByGroup(group));
+        records.setRecords(recordRepository.findAllByGroup(group));
         OutputStream responseOutputStream = response.getOutputStream();
         JAXBContext context = JAXBContext.newInstance(Records.class);
         Marshaller mar = context.createMarshaller();

@@ -39,8 +39,9 @@
                     </#list>
                 </select>
             </div>
-            <div class="col-sm-12 col-lg-2 my-2">
-                <button class="btn btn-primary" style="width: 100%" type="submit">Найти</button>
+            <div class="col-sm-12 col-lg-2 my-2 btn-group" >
+                <button class="btn btn-primary" style="width: 70%" type="submit">Найти</button>
+                <a class="btn btn-danger" href="/phonebook">X</a>
             </div>
         </div>
     </form>

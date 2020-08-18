@@ -31,8 +31,17 @@
             <div class="col-sm-12 col-lg-3">
                 <input disabled type="text" class="form-control" style="width: 100%" name="filter" value="${filter?ifExists}" placeholder="Поиск">
             </div>
-            <div class="col-sm-12 col-lg-2 my-2">
-                <button disabled class="btn btn-primary" style="width: 100%" type="submit">Найти</button>
+            <div class="col-sm-12 col-lg-2">
+                <select disabled style="width: 100%" class="custom-select" style="width: 100%" name="filterGroupName">
+                    <option selected>Все группы</option>
+                    <#list groups as group>
+                        <option value="${group.groupName}">${group.groupName}</option>
+                    </#list>
+                </select>
+            </div>
+            <div class="col-sm-12 col-lg-2 my-2 btn-group">
+                <button disabled class="btn btn-primary" style="width: 70%" type="submit">Найти</button>
+                <a class="btn btn-danger disabled" href="/phonebook">X</a>
             </div>
         </div>
     </form>

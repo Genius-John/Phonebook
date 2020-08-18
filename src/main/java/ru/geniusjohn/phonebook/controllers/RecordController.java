@@ -10,18 +10,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.Record;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
-import ru.geniusjohn.phonebook.repositories.RecordRepositories;
+import ru.geniusjohn.phonebook.repositories.RecordRepository;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Map;
 
 @Controller
 public class RecordController {
 
-    private RecordRepositories recordRepositories;
+    private RecordRepository recordRepository;
     private GroupRepository groupRepository;
 
     @Autowired
-    public void setRecordRepositories(RecordRepositories recordRepositories) {
-        this.recordRepositories = recordRepositories;
+    public void setRecordRepositories(RecordRepository recordRepository) {
+        this.recordRepository = recordRepository;
     }
 
     @Autowired
@@ -39,24 +42,24 @@ public class RecordController {
                            String filter,
                            @RequestParam(required = false, defaultValue = "")
                            String filterGroupName,
-                           Model model) {
+                           Model model,
+                           HttpServletRequest request) {
         Iterable<Record> records;
         Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         Group group = groupRepository.findByGroupName(filterGroupName);
-
+        Date date = new Date();
+        System.out.println("--------");
+        System.out.println("Home page visitor:");
+        System.out.println(date);
+        System.out.println("IP address: " + request.getRemoteAddr());
+        System.out.println("--------");
+        
         if (group != null) {
-            records = recordRepositories.findAllByGroupOrderByFullName(group);
-        } else {
-            records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName (filter, filter, filter);
-        }
-
-        //добавить проверку ↑
-//        if (filter != null && !filter.isEmpty()) {
-//            records = recordRepositories.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName (filter, filter, filter);
-//        }
-//        else {
-//            records = recordRepositories.findAllByOrderByFullName();
-//        }
+            records = recordRepository.findAllByGroupOrderByFullName(group);
+        } else if (filter != null && !filter.isEmpty()) {
+            records = recordRepository.findAllByFullNameContainsIgnoreCaseOrMobileNumberContainsOrExNumberContainsOrderByFullName (filter, filter, filter);
+        } else
+            records = recordRepository.findAllByOrderByFullName();
         model.addAttribute("records", records);
         model.addAttribute("filter", filter);
         model.addAttribute("groups", groups);
@@ -64,8 +67,14 @@ public class RecordController {
     }
 
     @GetMapping("/phonebook/del/{record}") //Удаление записи
-    public String delete(@PathVariable("record") Record record) {
-        recordRepositories.delete(record);
+    public String delete(@PathVariable("record") Record record,
+                         HttpServletRequest request) {
+        Date date = new Date();
+        recordRepository.delete(record);
+        System.out.println("--------");
+        System.out.println("Record deleted: " + record.getFullName());
+        System.out.println(date);
+        System.out.println("IP address: " + request.getRemoteAddr());
         return "redirect:/phonebook";
     }
     @GetMapping("/phonebook/{record}") // Страница редактирования записи
@@ -82,27 +91,39 @@ public class RecordController {
                         @RequestParam String exNumber,
                         @RequestParam String mobileNumber,
                         @RequestParam String groupName,
-                        Map<String, Object> model) {
+                        Map<String, Object> model,
+                        HttpServletRequest request) {
         Group group = groupRepository.findByGroupName(groupName);   //todo есть сомнения...
+        Date date = new Date();
         Record record = new Record(fullName, exNumber, mobileNumber, group);
-        recordRepositories.save(record);
-        Iterable<Record> records = recordRepositories.findAllByOrderByFullName();
+        recordRepository.save(record);
+        Iterable<Record> records = recordRepository.findAllByOrderByFullName();
+        System.out.println("--------");
         model.put("records", records);
+        System.out.println("Record created: " + record.getFullName());
+        System.out.println(date);
+        System.out.println("IP address: " + request.getRemoteAddr());
         return "redirect:/phonebook";
     }
 
     @PostMapping("/phonebook/update/{record}")
     public String save(@RequestParam String fullName,
-                        @RequestParam String exNumber,
-                        @RequestParam String mobileNumber,
-                        @RequestParam String groupName,
-                        @PathVariable("record") Record record) {
+                       @RequestParam String exNumber,
+                       @RequestParam String mobileNumber,
+                       @RequestParam String groupName,
+                       @PathVariable("record") Record record,
+                       HttpServletRequest request) {
         Group group = groupRepository.findByGroupName(groupName);
+        Date date = new Date();
         record.setFullName(fullName);
         record.setExNumber(exNumber);
         record.setMobileNumber(mobileNumber);
         record.setGroup(group);
-        recordRepositories.save(record);
+        recordRepository.save(record);
+        System.out.println("--------");
+        System.out.println("Record saved: " + record.getFullName());
+        System.out.println(date);
+        System.out.println("IP address: " + request.getRemoteAddr());
         return "redirect:/phonebook";
     }
 }
