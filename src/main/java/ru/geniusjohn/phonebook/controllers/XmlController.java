@@ -52,10 +52,10 @@ public class XmlController {
     @GetMapping("/phonebook/getMenuXml")
     public void getMenu(HttpServletResponse response, @RequestHeader Map<String, String> headers,  HttpServletRequest request) throws JAXBException, IOException {
         //нужно ли?
-//        logger.info("Header list:");
-//        headers.forEach((key, value) -> {
-//            logger.info(key + " = " + value);
-//        });
+        logger.info("Header list:");
+        headers.forEach((key, value) -> {
+            logger.info(key + " = " + value);
+        });
         Date date = new Date();
         //сведения о клиенте menuXml
         String[] userAgent = headers.get("user-agent").split(" ");
