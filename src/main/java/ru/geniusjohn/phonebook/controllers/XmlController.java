@@ -9,19 +9,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ru.geniusjohn.phonebook.domain.Group;
-import ru.geniusjohn.phonebook.domain.Menu;
-import ru.geniusjohn.phonebook.domain.Records;
+import ru.geniusjohn.phonebook.domain.PhoneInfo;
+import ru.geniusjohn.phonebook.xml.element.Records;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepository;
+import ru.geniusjohn.phonebook.xml.generator.XmlGenerator;
+import ru.geniusjohn.phonebook.xml.XmlGeneratorFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -32,7 +31,12 @@ public class XmlController {
 
     private RecordRepository recordRepository;
     private GroupRepository groupRepository;
-    private String baseUrl;
+    private XmlGeneratorFactory xmlGeneratorFactory;
+
+    @Autowired
+    public void setXmlGeneratorFactory(XmlGeneratorFactory xmlGeneratorFactory) {
+        this.xmlGeneratorFactory = xmlGeneratorFactory;
+    }
 
     @Autowired
     public void setRecordRepositories(RecordRepository recordRepository) {
@@ -44,30 +48,22 @@ public class XmlController {
         this.groupRepository = groupRepository;
     }
 
-    @Value("${ru.omc.webphonebook.base-url}")
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
 
-    @GetMapping("/phonebook/getMenuXml")
-    public void getMenu(HttpServletResponse response, @RequestHeader Map<String, String> headers,  HttpServletRequest request) throws JAXBException, IOException {
-        //нужно ли?
-        logger.info("Header list:");
-        headers.forEach((key, value) -> {
-            logger.info(key + " = " + value);
-        });
+
+    private PhoneInfo getPhoneFromHeader(Map<String, String> headers, HttpServletRequest request) {
+        PhoneInfo phoneInfo = new PhoneInfo();
         Date date = new Date();
         //сведения о клиенте menuXml
         String[] userAgent = headers.get("user-agent").split(" ");
         if (userAgent[3].matches("([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}")) {
-            String vendor = userAgent[0];
-            String model = userAgent[1];
-            String macAddress = userAgent[3];
+            phoneInfo.setMacAddress(userAgent[3]);
+            phoneInfo.setModelPhone(userAgent[1]);
+            phoneInfo.setVendor(userAgent[0]);
             System.out.println("-----------");
             System.out.println(date);
-            System.out.println("Vendor: " + vendor);
-            System.out.println("Model: " + model);
-            System.out.println("MAC-address: " + macAddress);
+            System.out.println("Vendor: " + phoneInfo.getVendor());
+            System.out.println("Model: " + phoneInfo.getModelPhone());
+            System.out.println("MAC-address: " + phoneInfo.getMacAddress());
             System.out.println("IP адрес: " + request.getRemoteAddr());
             System.out.println("-----------");
         } else {
@@ -77,26 +73,20 @@ public class XmlController {
             System.out.println("Модель телефона не опознана");
             System.out.println("-----------");
         }
+        return phoneInfo;
+    }
 
-        XMLGenerator generator = XMLGeneratorFactory.getGenerator(phoneModel); // XMLCiscoGenerator, XMLEltexGenerator ....
-        // XMLGeneratorFactory.getFactory()
-        // generator.generate(OutputStream outputStream): Marshaller;
+    @GetMapping("/phonebook/getMenuXml")
+    public void getMenu(HttpServletResponse response, @RequestHeader Map<String, String> headers,  HttpServletRequest request) throws JAXBException, IOException {
+        //нужно ли?
+        logger.info("Header list:");
+        headers.forEach((key, value) -> {
+            logger.info(key + " = " + value);
+        });
+        PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
 
-        // XMLCiscoGenerator
-        Menu menu = new Menu();
-        menu.setMenuItems(new ArrayList<>());
-        menu.setSoftKeyItems(new ArrayList<>());
-        for (Group group: groupRepository.findByOrderByOrderGroup()) {
-            String url = String.format("%s/phonebook/getGroupXml/%d", baseUrl, group.getId());
-            menu.getMenuItems().add(group.mapToItemMenu(url));
-            menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(url));
-        }
-        JAXBContext context = JAXBContext.newInstance(Menu.class);
-        Marshaller mar = context.createMarshaller();
-        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        mar.marshal(menu, outputStream);
-        // XMLCiscoGenerator - end
+        // XMLCiscoGenerator, XMLEltexGenerator ....
+        XmlGenerator generator = xmlGeneratorFactory.getMenuGenerator(phoneInfo);
 
         generator.generate(response.getOutputStream());
         response.setContentType("application/xml");
@@ -105,19 +95,19 @@ public class XmlController {
     }
 
     @GetMapping ("/phonebook/getGroupXml/{groupId}")
-    public void marshal (HttpServletResponse response, @PathVariable("groupId") Group group) throws JAXBException, IOException {
+    public void marshal (HttpServletResponse response,
+                         @PathVariable("groupId") Group group,
+                         @RequestHeader Map<String, String> headers,
+                         HttpServletRequest request) throws JAXBException, IOException {
 
-        XMLGenerator generator = XMLGenerator.getGenerator(phoneModel); // EmptyXMLGenerator, YealinkXMLGenerator ....
+        PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
 
         Records records = new Records();
-        records.setRecords(new ArrayList<>());
         records.setRecords(recordRepository.findAllByGroup(group));
-        OutputStream responseOutputStream = response.getOutputStream();
-        JAXBContext context = JAXBContext.newInstance(Records.class);
-        Marshaller mar = context.createMarshaller();
-        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        mar.marshal(records, responseOutputStream);
+
+        XmlGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo); // EmptyXMLGenerator, YealinkXMLGenerator ....
+
+        generator.generate(response.getOutputStream());
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", String.format("attachment; filename=group-%d.xml", group.getId()));
         response.getOutputStream().flush();

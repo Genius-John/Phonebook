@@ -4,13 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import ru.geniusjohn.phonebook.domain.EltexMenu;
-import ru.geniusjohn.phonebook.domain.Group;
-import ru.geniusjohn.phonebook.domain.GroupEltex;
-import ru.geniusjohn.phonebook.domain.Records;
+import ru.geniusjohn.phonebook.xml.element.EltexMenu;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepository;
-import sun.misc.Contended;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +17,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -66,15 +61,11 @@ public class XmlEltexController {
         EltexMenu eltexMenu = new EltexMenu();
         eltexMenu.setRecords(new ArrayList<>());
         eltexMenu.setRecords(recordRepository.findAll());
-        eltexMenu.setGroupEltex(new ArrayList<>());
-        eltexMenu.setGroupEltex(groupRepository.findAll());
 
         OutputStream responseOutputStream = response.getOutputStream();
-        JAXBContext context = JAXBContext.newInstance(EltexMenu.class);
-        Marshaller mar = context.createMarshaller();
-        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        mar.marshal(eltexMenu, responseOutputStream);
+
+
+
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", String.format("attachment; filename=eltexMenu.xml"));
         response.getOutputStream().flush();

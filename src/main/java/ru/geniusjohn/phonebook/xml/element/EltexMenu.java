@@ -1,4 +1,6 @@
-package ru.geniusjohn.phonebook.domain;
+package ru.geniusjohn.phonebook.xml.element;
+
+import ru.geniusjohn.phonebook.domain.Record;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;

@@ -1,6 +1,7 @@
 package ru.geniusjohn.phonebook.domain;
 
-import org.springframework.beans.factory.annotation.Value;
+import ru.geniusjohn.phonebook.xml.element.MenuItem;
+import ru.geniusjohn.phonebook.xml.element.SoftKeyItem;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.*;

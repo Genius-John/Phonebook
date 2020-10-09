@@ -1,4 +1,4 @@
-package ru.geniusjohn.phonebook.domain;
+package ru.geniusjohn.phonebook.xml.element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
