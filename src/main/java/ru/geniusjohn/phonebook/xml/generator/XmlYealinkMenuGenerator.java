@@ -24,6 +24,7 @@ public class XmlYealinkMenuGenerator implements XmlGenerator {
         this.baseUrl = baseUrl;
     }
 
+
     @Autowired
     public void setGroupRepository(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
@@ -37,6 +38,8 @@ public class XmlYealinkMenuGenerator implements XmlGenerator {
         for (Group group: groupRepository.findByOrderByOrderGroup()) {
             String url = String.format("%s/phonebook/getGroupXml/%d", baseUrl, group.getId());
             menu.getMenuItems().add(group.mapToItemMenu(url));
+            System.out.println(menu);
+            System.out.println(group);
             menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(url));
         }
         JAXBContext context = JAXBContext.newInstance(Menu.class);

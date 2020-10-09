@@ -25,6 +25,8 @@ public class XmlYealinkGroupGenerator implements XmlGenerator {
 
     @Override
     public void generate(OutputStream outputStream) throws JAXBException {
+        
+
         JAXBContext context = JAXBContext.newInstance(Records.class);
         Marshaller mar = context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);

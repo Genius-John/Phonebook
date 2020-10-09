@@ -84,10 +84,7 @@ public class XmlController {
             logger.info(key + " = " + value);
         });
         PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
-
-        // XMLCiscoGenerator, XMLEltexGenerator ....
         XmlGenerator generator = xmlGeneratorFactory.getMenuGenerator(phoneInfo);
-
         generator.generate(response.getOutputStream());
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", "attachment; filename=menu.xml");
@@ -101,11 +98,9 @@ public class XmlController {
                          HttpServletRequest request) throws JAXBException, IOException {
 
         PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
-
         Records records = new Records();
         records.setRecords(recordRepository.findAllByGroup(group));
-
-        XmlGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo); // EmptyXMLGenerator, YealinkXMLGenerator ....
+        XmlGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo, group); // EmptyXMLGenerator, YealinkXMLGenerator ....
 
         generator.generate(response.getOutputStream());
         response.setContentType("application/xml");
