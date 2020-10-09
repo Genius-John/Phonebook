@@ -3,14 +3,20 @@ package ru.geniusjohn.phonebook.domain;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
 
 @Entity
 @Table (name = "Groups")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Group {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @XmlTransient
     private Long id;
+    @XmlTransient
     private Long orderGroup;
+//    @XmlElementWrapper(name = "GroupList")
+    @XmlElement(name = "Group")
     private String groupName;
 
     public Group() {

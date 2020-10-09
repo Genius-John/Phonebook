@@ -78,6 +78,11 @@ public class XmlController {
             System.out.println("-----------");
         }
 
+        XMLGenerator generator = XMLGeneratorFactory.getGenerator(phoneModel); // XMLCiscoGenerator, XMLEltexGenerator ....
+        // XMLGeneratorFactory.getFactory()
+        // generator.generate(OutputStream outputStream): Marshaller;
+
+        // XMLCiscoGenerator
         Menu menu = new Menu();
         menu.setMenuItems(new ArrayList<>());
         menu.setSoftKeyItems(new ArrayList<>());
@@ -86,12 +91,14 @@ public class XmlController {
             menu.getMenuItems().add(group.mapToItemMenu(url));
             menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(url));
         }
-        OutputStream responseOutputStream = response.getOutputStream();
         JAXBContext context = JAXBContext.newInstance(Menu.class);
         Marshaller mar = context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        mar.marshal(menu, responseOutputStream);
+        mar.marshal(menu, outputStream);
+        // XMLCiscoGenerator - end
+
+        generator.generate(response.getOutputStream());
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", "attachment; filename=menu.xml");
         response.getOutputStream().flush();
@@ -99,6 +106,8 @@ public class XmlController {
 
     @GetMapping ("/phonebook/getGroupXml/{groupId}")
     public void marshal (HttpServletResponse response, @PathVariable("groupId") Group group) throws JAXBException, IOException {
+
+        XMLGenerator generator = XMLGenerator.getGenerator(phoneModel); // EmptyXMLGenerator, YealinkXMLGenerator ....
 
         Records records = new Records();
         records.setRecords(new ArrayList<>());
