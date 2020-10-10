@@ -45,4 +45,9 @@ public class XmlYealinkMenuGenerator implements XmlGenerator {
         mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
         mar.marshal(yealinkMenu, outputStream);
     }
+
+    @Override
+    public void generate(OutputStream outputStream, Group group) {
+
+    }
 }

@@ -97,8 +97,8 @@ public class XmlController {
         PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
         YealinkRecords records = new YealinkRecords();
         records.setRecords(recordRepository.findAllByGroup(group));
-        XmlGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo); // EmptyXMLGenerator, YealinkXMLGenerator ....
-        generator.generate(response.getOutputStream());
+        XmlGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo); // EmptyXMLGenerator, YealinkXMLGenerator .... todo
+        generator.generate(response.getOutputStream(), group);
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", String.format("attachment; filename=group-%d.xml", group.getId()));
         response.getOutputStream().flush();

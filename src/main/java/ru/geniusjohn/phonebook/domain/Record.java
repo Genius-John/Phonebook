@@ -6,11 +6,10 @@ import javax.xml.bind.annotation.*;
 @Entity
 @XmlRootElement(name="DirectoryEntry")
 @XmlType(propOrder = {"fullName", "exNumber", "mobileNumber"})
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @XmlTransient
     private Long id;
     @XmlElement(name="Name")
     private String fullName;
@@ -18,10 +17,8 @@ public class Record {
     private String exNumber;
     @XmlElement(name="Telephone")
     private String mobileNumber;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id")
-    @XmlTransient
     private Group group;
 
     public Record(){
