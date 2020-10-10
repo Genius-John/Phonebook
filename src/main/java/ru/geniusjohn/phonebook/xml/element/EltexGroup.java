@@ -10,7 +10,7 @@ import java.util.List;
 
 //@XmlRootElement(name = "GroupList")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class GroupEltex {
+public class EltexGroup {
 
     @XmlElement(name = "Group")
     private List<Group> groups = null;

@@ -18,7 +18,7 @@ public class EltexMenu {
 
     @XmlElementWrapper(name = "GroupLIst")
     @XmlElement(name = "XPEHb")
-    private List<GroupEltex> groupEltex;
+    private List<EltexGroup> eltexGroups;
 
     /*
 //    @XmlElementWrapper(name = "GroupLIst")
@@ -49,7 +49,7 @@ public class EltexMenu {
         this.records = records;
     }
 
-    public void setGroupEltex(List<GroupEltex> groupEltex) {
-        this.groupEltex = groupEltex;
+    public void setGroupEltex(List<EltexGroup> eltexGroups) {
+        this.eltexGroups = eltexGroups;
     }
 }

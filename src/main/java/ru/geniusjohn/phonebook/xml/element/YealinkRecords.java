@@ -7,7 +7,7 @@ import java.util.List;
 
 @XmlRootElement(name = "YealinkIPPhoneDirectory")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Records {
+public class YealinkRecords {
 
     @XmlElement(name = "DirectoryEntry")
     private List<Record> records = null;

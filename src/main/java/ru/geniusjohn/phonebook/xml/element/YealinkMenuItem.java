@@ -5,16 +5,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MenuItem {
+public class YealinkMenuItem {
     @XmlElement(name = "Name")
     private String name;
     @XmlElement(name = "URL")
     private String url = "URL";
 
-    public MenuItem() {
+    public YealinkMenuItem() {
     }
 
-    public MenuItem(String name, String url) {
+    public YealinkMenuItem(String name, String url) {
         this.name = name;
         this.url = url;
     }

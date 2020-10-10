@@ -3,14 +3,13 @@ package ru.geniusjohn.phonebook.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.PhoneInfo;
-import ru.geniusjohn.phonebook.xml.element.Records;
+import ru.geniusjohn.phonebook.xml.element.YealinkRecords;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepository;
 import ru.geniusjohn.phonebook.xml.generator.XmlGenerator;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 
@@ -96,12 +94,10 @@ public class XmlController {
                          @PathVariable("groupId") Group group,
                          @RequestHeader Map<String, String> headers,
                          HttpServletRequest request) throws JAXBException, IOException {
-
         PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
-        Records records = new Records();
+        YealinkRecords records = new YealinkRecords();
         records.setRecords(recordRepository.findAllByGroup(group));
-        XmlGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo, group); // EmptyXMLGenerator, YealinkXMLGenerator ....
-
+        XmlGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo); // EmptyXMLGenerator, YealinkXMLGenerator ....
         generator.generate(response.getOutputStream());
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", String.format("attachment; filename=group-%d.xml", group.getId()));

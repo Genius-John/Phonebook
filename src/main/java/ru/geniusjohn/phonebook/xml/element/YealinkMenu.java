@@ -8,16 +8,16 @@ import java.util.List;
 
 @XmlRootElement(name = "YealinkIPPhoneMenu")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Menu {
+public class YealinkMenu {
 
     @XmlElement (name = "Title")
     private String title = "XiaMen Yealink";
 
     @XmlElement(name = "MenuItem")
-    private List<MenuItem> menuItems;
+    private List<YealinkMenuItem> menuItems;
 
     @XmlElement(name = "SoftKeyItem")
-    private List<SoftKeyItem> softKeyItems;
+    private List<YealinkSoftKeyItem> yealinkSoftKeyItems;
 
     public String getTitle() {
         return title;
@@ -27,19 +27,19 @@ public class Menu {
         this.title = title;
     }
 
-    public List<MenuItem> getMenuItems() {
+    public List<YealinkMenuItem> getMenuItems() {
         return menuItems;
     }
 
-    public void setMenuItems(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
+    public void setMenuItems(List<YealinkMenuItem> yealinkMenuItems) {
+        this.menuItems = yealinkMenuItems;
     }
 
-    public List<SoftKeyItem> getSoftKeyItems() {
-        return softKeyItems;
+    public List<YealinkSoftKeyItem> getSoftKeyItems() {
+        return yealinkSoftKeyItems;
     }
 
-    public void setSoftKeyItems(List<SoftKeyItem> softKeyItems) {
-        this.softKeyItems = softKeyItems;
+    public void setSoftKeyItems(List<YealinkSoftKeyItem> yealinkSoftKeyItems) {
+        this.yealinkSoftKeyItems = yealinkSoftKeyItems;
     }
 }

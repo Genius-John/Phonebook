@@ -5,16 +5,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SoftKeyItem {
+public class YealinkSoftKeyItem {
     @XmlElement(name = "Name")
     private Long keyNum;
     @XmlElement(name = "URL")
     private String url;
 
-    public SoftKeyItem() {
+    public YealinkSoftKeyItem() {
     }
 
-    public SoftKeyItem(Long keyNum, String url) {
+    public YealinkSoftKeyItem(Long keyNum, String url) {
         this.keyNum = keyNum;
         this.url = url;
     }

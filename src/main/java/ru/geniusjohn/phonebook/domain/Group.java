@@ -1,7 +1,7 @@
 package ru.geniusjohn.phonebook.domain;
 
-import ru.geniusjohn.phonebook.xml.element.MenuItem;
-import ru.geniusjohn.phonebook.xml.element.SoftKeyItem;
+import ru.geniusjohn.phonebook.xml.element.YealinkMenuItem;
+import ru.geniusjohn.phonebook.xml.element.YealinkSoftKeyItem;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.*;
@@ -52,11 +52,11 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public MenuItem mapToItemMenu(String url) {
-        return new MenuItem(orderGroup + ". " + groupName, url);
+    public YealinkMenuItem mapToItemMenu(String url) {
+        return new YealinkMenuItem(orderGroup + ". " + groupName, url);
     }
 
-    public SoftKeyItem mapToSoftKeyMenu(String url) {
-        return new SoftKeyItem(orderGroup, url);
+    public YealinkSoftKeyItem mapToSoftKeyMenu(String url) {
+        return new YealinkSoftKeyItem(orderGroup, url);
     }
 }

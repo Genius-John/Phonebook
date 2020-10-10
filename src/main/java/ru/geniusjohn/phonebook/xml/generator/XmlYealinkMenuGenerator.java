@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.repositories.GroupRepository;
-import ru.geniusjohn.phonebook.xml.element.Menu;
-
+import ru.geniusjohn.phonebook.xml.element.YealinkMenu;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -32,20 +31,18 @@ public class XmlYealinkMenuGenerator implements XmlGenerator {
 
     @Override
     public void generate(OutputStream outputStream) throws JAXBException {
-        Menu menu = new Menu();
-        menu.setMenuItems(new ArrayList<>());
-        menu.setSoftKeyItems(new ArrayList<>());
+        YealinkMenu yealinkMenu = new YealinkMenu();
+        yealinkMenu.setMenuItems(new ArrayList<>());
+        yealinkMenu.setSoftKeyItems(new ArrayList<>());
         for (Group group: groupRepository.findByOrderByOrderGroup()) {
             String url = String.format("%s/phonebook/getGroupXml/%d", baseUrl, group.getId());
-            menu.getMenuItems().add(group.mapToItemMenu(url));
-            System.out.println(menu);
-            System.out.println(group);
-            menu.getSoftKeyItems().add(group.mapToSoftKeyMenu(url));
+            yealinkMenu.getMenuItems().add(group.mapToItemMenu(url));
+            yealinkMenu.getSoftKeyItems().add(group.mapToSoftKeyMenu(url));
         }
-        JAXBContext context = JAXBContext.newInstance(Menu.class);
+        JAXBContext context = JAXBContext.newInstance(YealinkMenu.class);
         Marshaller mar = context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        mar.marshal(menu, outputStream);
+        mar.marshal(yealinkMenu, outputStream);
     }
 }

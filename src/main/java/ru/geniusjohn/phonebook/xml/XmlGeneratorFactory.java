@@ -2,7 +2,6 @@ package ru.geniusjohn.phonebook.xml;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.PhoneInfo;
 import ru.geniusjohn.phonebook.xml.generator.XmlEltexGenerator;
 import ru.geniusjohn.phonebook.xml.generator.XmlGenerator;
@@ -40,10 +39,9 @@ public class XmlGeneratorFactory {
             case "eltex" : return xmlEltexGenerator;
             default: return xmlYealinkMenuGenerator;
         }
-//        return new XmlYealinkGenerator(groups, baseUrl);
     }
 
-    public XmlGenerator getGroupGenerator(PhoneInfo phoneInfo, Group group){
+    public XmlGenerator getGroupGenerator(PhoneInfo phoneInfo){
         return xmlYealinkGroupGenerator;
     }
 }
