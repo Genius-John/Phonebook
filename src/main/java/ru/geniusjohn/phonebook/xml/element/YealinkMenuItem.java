@@ -1,5 +1,7 @@
 package ru.geniusjohn.phonebook.xml.element;
 
+import ru.geniusjohn.phonebook.domain.Group;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,9 +16,14 @@ public class YealinkMenuItem {
     public YealinkMenuItem() {
     }
 
+    @Deprecated
     public YealinkMenuItem(String name, String url) {
         this.name = name;
         this.url = url;
+    }
+
+    public YealinkMenuItem(Group group, String url) {
+        // @TODO Implement
     }
 
     public String getName() {

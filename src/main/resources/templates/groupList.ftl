@@ -15,7 +15,6 @@
     <div class="my-3">
         <a href="/phonebook" class="mr-3"><b>List of records</b></a>
         <a href="/phonebook/getMenuXml" class="mr-3"><b>menuXML</b></a>
-        <a href="/phonebook/getXmlEltex" class="mr-3"><b>eltexMenuXML</b></a>
     </div>
     <table class="table table-hover mt-3">
     <thead>

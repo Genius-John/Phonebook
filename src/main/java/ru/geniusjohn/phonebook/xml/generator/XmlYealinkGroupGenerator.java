@@ -26,7 +26,6 @@ public class XmlYealinkGroupGenerator implements XmlGenerator {
     @Override
     public void generate(OutputStream outputStream) {
 
-
 //        mar.marshal(records, System.out); вывод в консоль
     }
 

@@ -35,9 +35,9 @@ public class XmlGeneratorFactory {
             return new XmlYealinkMenuGenerator();
         }
         switch (phoneInfo.getVendor().toLowerCase()) {
-            case "yealink" : return xmlYealinkMenuGenerator;
-            case "eltex" : return xmlEltexGenerator;
-            default: return xmlYealinkMenuGenerator;
+            case "yealink": return xmlYealinkMenuGenerator;
+            case "eltex": return xmlEltexGenerator;
+            default: return xmlEltexGenerator;
         }
     }
 

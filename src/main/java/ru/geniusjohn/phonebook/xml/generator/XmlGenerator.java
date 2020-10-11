@@ -10,5 +10,5 @@ public interface XmlGenerator {
     void generate(OutputStream outputStream) throws JAXBException;
 
     void generate(OutputStream outputStream, Group group) throws JAXBException;
-
+//todo сделать второй интерфейс для групп
 }

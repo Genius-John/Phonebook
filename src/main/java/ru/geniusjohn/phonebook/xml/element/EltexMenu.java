@@ -16,8 +16,8 @@ public class EltexMenu {
     @XmlElement(name = "Prompt")
     private String prompt="Prompt";
 
-    @XmlElementWrapper(name = "GroupLIst")
-    @XmlElement(name = "XPEHb")
+    @XmlElementWrapper(name = "Grouplist")
+    @XmlElement(name = "Group")
     private List<EltexGroup> eltexGroups;
 
     /*
@@ -27,7 +27,8 @@ public class EltexMenu {
     */
 
     @XmlElement(name = "DirectoryEntry")
-    private List<Record> records;
+    private List<EltexRecord> records;
+
 
     public String getTitle() {
         return title;
@@ -45,11 +46,15 @@ public class EltexMenu {
         this.prompt = prompt;
     }
 
-    public void setRecords(List<Record> records) {
+    public void setRecords(List<EltexRecord> records) {
         this.records = records;
     }
 
-    public void setGroupEltex(List<EltexGroup> eltexGroups) {
+    public List<EltexGroup> getEltexGroups() {
+        return eltexGroups;
+    }
+
+    public void setEltexGroups(List<EltexGroup> eltexGroups) {
         this.eltexGroups = eltexGroups;
     }
 }

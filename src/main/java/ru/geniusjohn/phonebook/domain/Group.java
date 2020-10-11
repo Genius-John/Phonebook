@@ -8,16 +8,16 @@ import javax.xml.bind.annotation.*;
 
 @Entity
 @Table (name = "Groups")
-@XmlAccessorType(XmlAccessType.FIELD)
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class Group {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @XmlTransient
+//    @XmlTransient
     private Long id;
-    @XmlTransient
+//    @XmlTransient
     private Long orderGroup;
 //    @XmlElementWrapper(name = "GroupList")
-    @XmlElement(name = "Group")
+//    @XmlElement(name = "Group")
     private String groupName;
 
     public Group() {

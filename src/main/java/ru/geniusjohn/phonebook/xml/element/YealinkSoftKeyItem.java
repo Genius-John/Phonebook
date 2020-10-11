@@ -1,5 +1,7 @@
 package ru.geniusjohn.phonebook.xml.element;
 
+import ru.geniusjohn.phonebook.domain.Group;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,9 +16,14 @@ public class YealinkSoftKeyItem {
     public YealinkSoftKeyItem() {
     }
 
+    @Deprecated
     public YealinkSoftKeyItem(Long keyNum, String url) {
         this.keyNum = keyNum;
         this.url = url;
+    }
+
+    public YealinkSoftKeyItem(Group group, String url) {
+        // @TODO Implement
     }
 
     public Long getKeyNum() {

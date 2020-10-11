@@ -1,25 +1,27 @@
 package ru.geniusjohn.phonebook.xml.element;
 
-
 import ru.geniusjohn.phonebook.domain.Group;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import java.util.List;
+import javax.xml.bind.annotation.*;
 
-//@XmlRootElement(name = "GroupList")
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class EltexGroup {
+    @XmlAttribute(name = "name")
+    private String groupName;
 
-    @XmlElement(name = "Group")
-    private List<Group> groups = null;
-
-    public List<Group> getGroups() {
-        return groups;
+    public EltexGroup() {
     }
 
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
+    public EltexGroup(Group group) {
+        this.groupName = group.getGroupName();
     }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
 }
