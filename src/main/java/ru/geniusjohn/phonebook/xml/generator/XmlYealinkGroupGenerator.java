@@ -34,9 +34,9 @@ public class XmlYealinkGroupGenerator implements XmlGroupGenerator {
         }
         records.setRecords(yealinkRecords);
         JAXBContext context = JAXBContext.newInstance(YealinkRecords.class);
-        Marshaller mar = context.createMarshaller();
-        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        mar.marshal(records, outputStream);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+        marshaller.marshal(records, outputStream);
     }
 }

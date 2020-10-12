@@ -42,10 +42,10 @@ public class XmlYealinkMenuGenerator implements XmlMenuGenerator {
             yealinkMenu.getSoftKeyItems().add(new YealinkSoftKeyItem(group, url));
         }
         JAXBContext context = JAXBContext.newInstance(YealinkMenu.class);
-        Marshaller mar = context.createMarshaller();
-        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        mar.marshal(yealinkMenu, outputStream);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+        marshaller.marshal(yealinkMenu, outputStream);
     }
 
 }

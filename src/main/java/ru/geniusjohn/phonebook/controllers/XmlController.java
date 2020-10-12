@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.PhoneInfo;
-import ru.geniusjohn.phonebook.repositories.RecordRepository;
 import ru.geniusjohn.phonebook.xml.XmlGeneratorFactory;
 import ru.geniusjohn.phonebook.xml.generator.XmlGroupGenerator;
 import ru.geniusjohn.phonebook.xml.generator.XmlMenuGenerator;
@@ -25,8 +24,6 @@ import java.util.Map;
 public class XmlController {
 
     private static final Logger logger = LoggerFactory.getLogger(XmlController.class);
-
-    private RecordRepository recordRepository;
     private XmlGeneratorFactory xmlGeneratorFactory;
 
     @Autowired
@@ -34,15 +31,10 @@ public class XmlController {
         this.xmlGeneratorFactory = xmlGeneratorFactory;
     }
 
-    @Autowired
-    public void setRecordRepositories(RecordRepository recordRepository) {
-        this.recordRepository = recordRepository;
-    }
-
     private PhoneInfo getPhoneFromHeader(Map<String, String> headers, HttpServletRequest request) {
         PhoneInfo phoneInfo = new PhoneInfo();
         Date date = new Date();
-        //сведения о клиенте menuXml
+        //сведения о клиенте
         String[] userAgent = headers.get("user-agent").split(" ");
         if (userAgent[3].matches("([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}")) {
             phoneInfo.setMacAddress(userAgent[3]);
@@ -86,7 +78,7 @@ public class XmlController {
                          @RequestHeader Map<String, String> headers,
                          HttpServletRequest request) throws JAXBException, IOException {
         PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
-        XmlGroupGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo); // EmptyXMLGenerator, YealinkXMLGenerator .... todo
+        XmlGroupGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo);
         generator.generate(response.getOutputStream(), group);
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", String.format("attachment; filename=group-%d.xml", group.getId()));

@@ -32,16 +32,16 @@ public class XmlGeneratorFactory {
             return new XmlYealinkMenuGenerator();
         }
         switch (phoneInfo.getVendor().toLowerCase()) {
-            case "yealink": return xmlYealinkMenuGenerator;
-            case "eltex": return xmlEltexGenerator;
-            default: return xmlYealinkMenuGenerator;
+            case "yealink" : return xmlYealinkMenuGenerator;
+            case "eltex" : return xmlEltexGenerator;
+            default: return xmlEltexGenerator;
         }
     }
 
     public XmlGroupGenerator getGroupGenerator(PhoneInfo phoneInfo){
         switch (phoneInfo.getVendor().toLowerCase()) {
-            case "yealink": return xmlYealinkGroupGenerator;
-            case "eltex": return null;
+            case "yealink" : return xmlYealinkGroupGenerator;
+            case "eltex" : return null;
             default: return xmlYealinkGroupGenerator;
         }
     }

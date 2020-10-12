@@ -46,9 +46,9 @@ public class XmlEltexGenerator implements XmlMenuGenerator {
         }
         eltexMenu.setEltexGroups(eltexGroupList);
         JAXBContext context = JAXBContext.newInstance(EltexMenu.class);
-        Marshaller mar = context.createMarshaller();
-        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        mar.marshal(eltexMenu, outputStream);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+        marshaller.marshal(eltexMenu, outputStream);
     }
 }

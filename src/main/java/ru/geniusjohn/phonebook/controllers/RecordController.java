@@ -53,7 +53,6 @@ public class RecordController {
         System.out.println(date);
         System.out.println("IP address: " + request.getRemoteAddr());
         System.out.println("--------");
-        
         if (group != null) {
             records = recordRepository.findAllByGroupOrderByFullName(group);
         } else if (filter != null && !filter.isEmpty()) {
@@ -93,7 +92,7 @@ public class RecordController {
                         @RequestParam String groupName,
                         Map<String, Object> model,
                         HttpServletRequest request) {
-        Group group = groupRepository.findByGroupName(groupName);   //todo есть сомнения...
+        Group group = groupRepository.findByGroupName(groupName);
         Date date = new Date();
         Record record = new Record(fullName, exNumber, mobileNumber, group);
         recordRepository.save(record);
