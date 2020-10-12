@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ru.geniusjohn.phonebook.domain.Group;
 import ru.geniusjohn.phonebook.domain.PhoneInfo;
-import ru.geniusjohn.phonebook.xml.element.YealinkRecords;
-import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepository;
-import ru.geniusjohn.phonebook.xml.generator.XmlGenerator;
 import ru.geniusjohn.phonebook.xml.XmlGeneratorFactory;
+import ru.geniusjohn.phonebook.xml.generator.XmlGroupGenerator;
+import ru.geniusjohn.phonebook.xml.generator.XmlMenuGenerator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +27,6 @@ public class XmlController {
     private static final Logger logger = LoggerFactory.getLogger(XmlController.class);
 
     private RecordRepository recordRepository;
-    private GroupRepository groupRepository;
     private XmlGeneratorFactory xmlGeneratorFactory;
 
     @Autowired
@@ -40,13 +38,6 @@ public class XmlController {
     public void setRecordRepositories(RecordRepository recordRepository) {
         this.recordRepository = recordRepository;
     }
-
-    @Autowired
-    public void setGroupRepository(GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
-    }
-
-
 
     private PhoneInfo getPhoneFromHeader(Map<String, String> headers, HttpServletRequest request) {
         PhoneInfo phoneInfo = new PhoneInfo();
@@ -82,7 +73,7 @@ public class XmlController {
             logger.info(key + " = " + value);
         });
         PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
-        XmlGenerator generator = xmlGeneratorFactory.getMenuGenerator(phoneInfo);
+        XmlMenuGenerator generator = xmlGeneratorFactory.getMenuGenerator(phoneInfo);
         generator.generate(response.getOutputStream());
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", "attachment; filename=menu.xml");
@@ -95,9 +86,7 @@ public class XmlController {
                          @RequestHeader Map<String, String> headers,
                          HttpServletRequest request) throws JAXBException, IOException {
         PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
-        YealinkRecords records = new YealinkRecords();
-        records.setRecords(recordRepository.findAllByGroup(group));
-        XmlGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo); // EmptyXMLGenerator, YealinkXMLGenerator .... todo
+        XmlGroupGenerator generator = xmlGeneratorFactory.getGroupGenerator(phoneInfo); // EmptyXMLGenerator, YealinkXMLGenerator .... todo
         generator.generate(response.getOutputStream(), group);
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", String.format("attachment; filename=group-%d.xml", group.getId()));

@@ -1,8 +1,9 @@
 package ru.geniusjohn.phonebook.xml.element;
 
-import ru.geniusjohn.phonebook.domain.Record;
-
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement(name = "YealinkIPPhoneDirectory")
@@ -10,13 +11,15 @@ import java.util.List;
 public class YealinkRecords {
 
     @XmlElement(name = "DirectoryEntry")
-    private List<Record> records = null;
+    private List<YealinkRecord> records = null;
 
-    public List<Record> getRecords() {
+
+
+    public List<YealinkRecord> getRecords() {
         return records;
     }
 
-    public void setRecords(List<Record> records) {
+    public void setRecords(List<YealinkRecord> records) {
         this.records = records;
     }
 }

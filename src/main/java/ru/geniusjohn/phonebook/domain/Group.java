@@ -1,23 +1,14 @@
 package ru.geniusjohn.phonebook.domain;
 
-import ru.geniusjohn.phonebook.xml.element.YealinkMenuItem;
-import ru.geniusjohn.phonebook.xml.element.YealinkSoftKeyItem;
-
 import javax.persistence.*;
-import javax.xml.bind.annotation.*;
 
 @Entity
 @Table (name = "Groups")
-//@XmlAccessorType(XmlAccessType.FIELD)
 public class Group {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-//    @XmlTransient
     private Long id;
-//    @XmlTransient
     private Long orderGroup;
-//    @XmlElementWrapper(name = "GroupList")
-//    @XmlElement(name = "Group")
     private String groupName;
 
     public Group() {
@@ -52,11 +43,4 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public YealinkMenuItem mapToItemMenu(String url) {
-        return new YealinkMenuItem(orderGroup + ". " + groupName, url);
-    }
-
-    public YealinkSoftKeyItem mapToSoftKeyMenu(String url) {
-        return new YealinkSoftKeyItem(orderGroup, url);
-    }
 }

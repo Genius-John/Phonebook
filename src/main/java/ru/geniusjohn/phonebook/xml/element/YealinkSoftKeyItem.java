@@ -16,14 +16,10 @@ public class YealinkSoftKeyItem {
     public YealinkSoftKeyItem() {
     }
 
-    @Deprecated
-    public YealinkSoftKeyItem(Long keyNum, String url) {
-        this.keyNum = keyNum;
-        this.url = url;
-    }
-
     public YealinkSoftKeyItem(Group group, String url) {
-        // @TODO Implement
+        // @TODO Implemented
+        this.keyNum = group.getOrderGroup();
+        this.url = url;
     }
 
     public Long getKeyNum() {

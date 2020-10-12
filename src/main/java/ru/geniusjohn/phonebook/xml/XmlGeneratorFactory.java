@@ -3,10 +3,7 @@ package ru.geniusjohn.phonebook.xml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.geniusjohn.phonebook.domain.PhoneInfo;
-import ru.geniusjohn.phonebook.xml.generator.XmlEltexGenerator;
-import ru.geniusjohn.phonebook.xml.generator.XmlGenerator;
-import ru.geniusjohn.phonebook.xml.generator.XmlYealinkGroupGenerator;
-import ru.geniusjohn.phonebook.xml.generator.XmlYealinkMenuGenerator;
+import ru.geniusjohn.phonebook.xml.generator.*;
 
 @Component
 public class XmlGeneratorFactory {
@@ -30,18 +27,22 @@ public class XmlGeneratorFactory {
         this.xmlEltexGenerator = xmlEltexGenerator;
     }
 
-    public XmlGenerator getMenuGenerator(PhoneInfo phoneInfo) {
+    public XmlMenuGenerator getMenuGenerator(PhoneInfo phoneInfo) {
         if (phoneInfo.getVendor() == null) {
             return new XmlYealinkMenuGenerator();
         }
         switch (phoneInfo.getVendor().toLowerCase()) {
             case "yealink": return xmlYealinkMenuGenerator;
             case "eltex": return xmlEltexGenerator;
-            default: return xmlEltexGenerator;
+            default: return xmlYealinkMenuGenerator;
         }
     }
 
-    public XmlGenerator getGroupGenerator(PhoneInfo phoneInfo){
-        return xmlYealinkGroupGenerator;
+    public XmlGroupGenerator getGroupGenerator(PhoneInfo phoneInfo){
+        switch (phoneInfo.getVendor().toLowerCase()) {
+            case "yealink": return xmlYealinkGroupGenerator;
+            case "eltex": return null;
+            default: return xmlYealinkGroupGenerator;
+        }
     }
 }

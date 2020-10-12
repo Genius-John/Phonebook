@@ -1,7 +1,5 @@
 package ru.geniusjohn.phonebook.xml.element;
 
-import ru.geniusjohn.phonebook.domain.Record;
-
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
@@ -12,23 +10,13 @@ public class EltexMenu {
 
     @XmlElement(name = "Title")
     private String title = "EltexPhones";
-
     @XmlElement(name = "Prompt")
     private String prompt="Prompt";
-
     @XmlElementWrapper(name = "Grouplist")
     @XmlElement(name = "Group")
     private List<EltexGroup> eltexGroups;
-
-    /*
-//    @XmlElementWrapper(name = "GroupLIst")
-    @XmlElement(name = "XPEHb")
-    private List<GroupEltex> groupEltex;
-    */
-
     @XmlElement(name = "DirectoryEntry")
     private List<EltexRecord> records;
-
 
     public String getTitle() {
         return title;

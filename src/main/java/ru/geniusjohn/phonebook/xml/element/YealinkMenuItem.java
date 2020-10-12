@@ -16,14 +16,10 @@ public class YealinkMenuItem {
     public YealinkMenuItem() {
     }
 
-    @Deprecated
-    public YealinkMenuItem(String name, String url) {
-        this.name = name;
-        this.url = url;
-    }
-
     public YealinkMenuItem(Group group, String url) {
-        // @TODO Implement
+        // @TODO Implemented
+        this.name = group.getOrderGroup() + ". " + group.getGroupName();
+        this.url = url;
     }
 
     public String getName() {

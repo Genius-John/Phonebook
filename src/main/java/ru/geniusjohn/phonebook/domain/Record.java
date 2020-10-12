@@ -1,21 +1,14 @@
 package ru.geniusjohn.phonebook.domain;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.*;
 
 @Entity
-@XmlRootElement(name="DirectoryEntry")
-@XmlType(propOrder = {"fullName", "exNumber", "mobileNumber"})
-@XmlAccessorType(XmlAccessType.NONE)
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @XmlElement(name="Name")
     private String fullName;
-    @XmlElement(name="Telephone")
     private String exNumber;
-    @XmlElement(name="Telephone")
     private String mobileNumber;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id")
