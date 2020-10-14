@@ -1,5 +1,7 @@
 package ru.geniusjohn.phonebook.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +15,12 @@ import ru.geniusjohn.phonebook.repositories.GroupRepository;
 import ru.geniusjohn.phonebook.repositories.RecordRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.Map;
 
 @Controller
 public class RecordController {
 
+    private static final Logger logger = LoggerFactory.getLogger(RecordController.class);
     private RecordRepository recordRepository;
     private GroupRepository groupRepository;
 
@@ -47,12 +49,10 @@ public class RecordController {
         Iterable<Record> records;
         Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         Group group = groupRepository.findByGroupName(filterGroupName);
-        Date date = new Date();
-        System.out.println("--------");
-        System.out.println("Home page visitor:");
-        System.out.println(date);
-        System.out.println("IP address: " + request.getRemoteAddr());
-        System.out.println("--------");
+        logger.info("--------");
+        logger.info("Home page visitor:");
+        logger.info("IP address: " + request.getRemoteAddr());
+        logger.info("--------");
         if (group != null) {
             records = recordRepository.findAllByGroupOrderByFullName(group);
         } else if (filter != null && !filter.isEmpty()) {
@@ -68,12 +68,10 @@ public class RecordController {
     @GetMapping("/phonebook/del/{record}") //Удаление записи
     public String delete(@PathVariable("record") Record record,
                          HttpServletRequest request) {
-        Date date = new Date();
         recordRepository.delete(record);
-        System.out.println("--------");
-        System.out.println("Record deleted: " + record.getFullName());
-        System.out.println(date);
-        System.out.println("IP address: " + request.getRemoteAddr());
+        logger.info("--------");
+        logger.info("Record deleted: " + record.getFullName());
+        logger.info("IP address: " + request.getRemoteAddr());
         return "redirect:/phonebook";
     }
     @GetMapping("/phonebook/{record}") // Страница редактирования записи
@@ -93,15 +91,13 @@ public class RecordController {
                         Map<String, Object> model,
                         HttpServletRequest request) {
         Group group = groupRepository.findByGroupName(groupName);
-        Date date = new Date();
         Record record = new Record(fullName, exNumber, mobileNumber, group);
         recordRepository.save(record);
         Iterable<Record> records = recordRepository.findAllByOrderByFullName();
-        System.out.println("--------");
         model.put("records", records);
-        System.out.println("Record created: " + record.getFullName());
-        System.out.println(date);
-        System.out.println("IP address: " + request.getRemoteAddr());
+        logger.info("--------");
+        logger.info("Record created: " + record.getFullName());
+        logger.info("IP address: " + request.getRemoteAddr());
         return "redirect:/phonebook";
     }
 
@@ -113,16 +109,15 @@ public class RecordController {
                        @PathVariable("record") Record record,
                        HttpServletRequest request) {
         Group group = groupRepository.findByGroupName(groupName);
-        Date date = new Date();
         record.setFullName(fullName);
         record.setExNumber(exNumber);
         record.setMobileNumber(mobileNumber);
         record.setGroup(group);
         recordRepository.save(record);
-        System.out.println("--------");
-        System.out.println("Record saved: " + record.getFullName());
-        System.out.println(date);
-        System.out.println("IP address: " + request.getRemoteAddr());
+        logger.info("--------");
+        logger.info("Record saved: " + record.getFullName());
+        logger.info("IP address: " + request.getRemoteAddr());
+        logger.info("--------");
         return "redirect:/phonebook";
     }
 }

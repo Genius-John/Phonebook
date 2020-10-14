@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -33,26 +32,26 @@ public class XmlController {
 
     private PhoneInfo getPhoneFromHeader(Map<String, String> headers, HttpServletRequest request) {
         PhoneInfo phoneInfo = new PhoneInfo();
-        Date date = new Date();
         //сведения о клиенте
-        String[] userAgent = headers.get("user-agent").split(" ");
-        if (userAgent[3].matches("([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}")) {
-            phoneInfo.setMacAddress(userAgent[3]);
-            phoneInfo.setModelPhone(userAgent[1]);
-            phoneInfo.setVendor(userAgent[0]);
-            System.out.println("-----------");
-            System.out.println(date);
-            System.out.println("Vendor: " + phoneInfo.getVendor());
-            System.out.println("Model: " + phoneInfo.getModelPhone());
-            System.out.println("MAC-address: " + phoneInfo.getMacAddress());
-            System.out.println("IP адрес: " + request.getRemoteAddr());
-            System.out.println("-----------");
+        String userAgent = headers.get("user-agent");
+        String[] userAgentList = userAgent != null
+                ? userAgent.split(" ")
+                : new String[0];
+        if (userAgentList.length > 0 && userAgentList[3].matches("([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}")) {
+            phoneInfo.setMacAddress(userAgentList[3]);
+            phoneInfo.setModelPhone(userAgentList[1]);
+            phoneInfo.setVendor(userAgentList[0]);
+            logger.info("-----------");
+            logger.info("Vendor: " + phoneInfo.getVendor());
+            logger.info("Model: " + phoneInfo.getModelPhone());
+            logger.info("MAC-address: " + phoneInfo.getMacAddress());
+            logger.info("IP адрес: " + request.getRemoteAddr());
+            logger.info("-----------");
         } else {
-            System.out.println("-----------");
-            System.out.println(date);
-            System.out.println("IP адрес: " + request.getRemoteAddr());
-            System.out.println("Модель телефона не опознана");
-            System.out.println("-----------");
+            logger.info("-----------");
+            logger.info("IP адрес: " + request.getRemoteAddr());
+            logger.info("Модель телефона не опознана");
+            logger.info("-----------");
         }
         return phoneInfo;
     }
