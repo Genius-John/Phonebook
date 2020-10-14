@@ -49,10 +49,10 @@ public class RecordController {
         Iterable<Record> records;
         Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         Group group = groupRepository.findByGroupName(filterGroupName);
-        logger.info("--------");
-        logger.info("Home page visitor:");
-        logger.info("IP address: " + request.getRemoteAddr());
-        logger.info("--------");
+//        logger.info("--------");
+//        logger.info("Home page visitor:");
+//        logger.info("IP address: " + request.getRemoteAddr());
+//        logger.info("--------");
         if (group != null) {
             records = recordRepository.findAllByGroupOrderByFullName(group);
         } else if (filter != null && !filter.isEmpty()) {
