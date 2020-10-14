@@ -75,7 +75,8 @@ public class RecordController {
         return "redirect:/phonebook";
     }
     @GetMapping("/phonebook/{record}") // Страница редактирования записи
-    public String update(@PathVariable() Record record, Model model) {
+    public String update(@PathVariable() Record record,
+                         Model model) {
         Iterable<Group> groups = groupRepository.findByOrderByOrderGroup();
         model.addAttribute("groups", groups);
         model.addAttribute("record", record);

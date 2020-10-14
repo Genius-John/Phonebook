@@ -41,6 +41,21 @@ public class XmlController {
             phoneInfo.setMacAddress(userAgentList[3]);
             phoneInfo.setModelPhone(userAgentList[1]);
             phoneInfo.setVendor(userAgentList[0]);
+        }
+        return phoneInfo;
+    }
+
+    @GetMapping("/phonebook/getMenuXml")
+    public void getMenu(HttpServletResponse response,
+                        @RequestHeader Map<String, String> headers,
+                        HttpServletRequest request) throws JAXBException, IOException {
+        //for testing
+        logger.info("Header list:");
+        headers.forEach((key, value) -> { //todo Спросить у Саши как это работает...
+            logger.info(key + " = " + value);
+        });
+        PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
+        if (phoneInfo.getMacAddress().matches("([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}")) {
             logger.info("-----------");
             logger.info("Vendor: " + phoneInfo.getVendor());
             logger.info("Model: " + phoneInfo.getModelPhone());
@@ -53,17 +68,6 @@ public class XmlController {
             logger.info("Модель телефона не опознана");
             logger.info("-----------");
         }
-        return phoneInfo;
-    }
-
-    @GetMapping("/phonebook/getMenuXml")
-    public void getMenu(HttpServletResponse response, @RequestHeader Map<String, String> headers,  HttpServletRequest request) throws JAXBException, IOException {
-        //нужно ли?
-        logger.info("Header list:");
-        headers.forEach((key, value) -> {
-            logger.info(key + " = " + value);
-        });
-        PhoneInfo phoneInfo = getPhoneFromHeader(headers, request);
         XmlMenuGenerator generator = xmlGeneratorFactory.getMenuGenerator(phoneInfo);
         generator.generate(response.getOutputStream());
         response.setContentType("application/xml");
